@@ -1,0 +1,15 @@
+{
+  "name": "MandosSportsBook",
+  "version": "1.0.0",
+  "description": "Fullstack boilerplate with Vite + React frontend and Node.js backend",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run dev --prefix server",
+    "dev:client": "npm run dev --prefix client",
+    "start": "npm run start --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
