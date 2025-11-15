@@ -1,9 +1,8 @@
 #sign-up-container {
     display: flex;
     flex-direction: column;
-    font-size: 1.3rem;
-    width: 80vw;
-    height: 50vh;
+    font-size: 1.1rem;
+    width: 50vw;
     margin: 160px auto;
     background-color: #043927;
     color: #d3d4d9;
@@ -16,13 +15,15 @@
 
 #sign-up-title {
     font-size: 28px;
+    margin-top: 80px;
 }
 
 #sign-up {
     display: flex;
     flex-direction: column;
-    width: 80%;
-    border: 1px red dashed;
+    width: 70%;
+    margin-top: 50px;
+    padding: 25px;
 }
 
 #name-container {
@@ -39,14 +40,21 @@
     flex-direction: column;
 }
 
-.middle {
- 
-  width: 160px;
+.first input {
+    width: 250px
+}
 
+.middle {
+  width: 110px;
+  margin-left: 15px;
+}
+
+.last input {
+    width: 250px;
 }
 
 .middle label {
-    width: 95px;
+    width: 110px;
 }
 
 .middle input {
@@ -56,15 +64,28 @@
 #contact-info-container {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 #contact-info-container label {
     margin-bottom: 8px;
 }
 
-.contact {
-    width: 40%;
+.email-contact{
+    width: 360px;
+}
+
+.phone-contact{
+    width: 155px;
+    margin-right: 25px;
+}
+
+.email-contact input {
+    width: 350px;
+}
+
+.phone-contact input{
+    width: 150px;
 }
 
 .email-contact input{
@@ -74,12 +95,20 @@
 #date-of-birth-container {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .dob {
     display: flex;
     flex-direction: column;
+}
+
+.dob-month {
+    margin-left: 50px;
+}
+
+.dob-year {
+    margin-right: 50px;
 }
 
 .dob label {
@@ -88,7 +117,7 @@
 
 #password-container {
     display: flex;
-    margin-top: 20px;
+    margin: 40px 0 60px 0;
     justify-content: space-between;
 }
 
@@ -99,4 +128,12 @@
 
 .password label {
     margin-bottom: 8px;
+}
+
+#signup-submit{
+    font-size: 1.2rem;
+    padding: 5px 20px;
+    margin-bottom: 40px;
+    border: none;
+    border-radius: 8px;
 }

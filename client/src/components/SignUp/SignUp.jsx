@@ -5,11 +5,11 @@ export default function SignUp() {
         <div id="sign-up-container">
             <h2 id="sign-up-title">Sign Up</h2>
 
-            <div id="sign-up">
+            <div id="form sign-up">
 
               
                 <div id="name-container">
-                    <div className="signup-container">
+                    <div className="signup-container first">
                         <label htmlFor="first-name">First Name</label>
                         <input id="first-name" type="text" />
                     </div>
@@ -19,7 +19,7 @@ export default function SignUp() {
                         <input id="middle-initial" type="text" />
                     </div>
 
-                    <div className="signup-container">
+                    <div className="signup-container last">
                         <label htmlFor="last-name">Last Name</label>
                         <input id="last-name" type="text" />
                     </div>
@@ -31,7 +31,7 @@ export default function SignUp() {
                         <label htmlFor="contact-email">Email</label>
                         <input id="contact-email" type="email" />
                     </div>
-                    <div className="signup-container contact">
+                    <div className="signup-container phone-contact contact">
                         <label htmlFor="phone-number">Phone Number</label>
                         <input id="phone-number" type="tel" />
                     </div>
@@ -39,7 +39,7 @@ export default function SignUp() {
 
                 {/* DOB SECTION */}
                 <div id="date-of-birth-container">
-                    <div className="dob">
+                    <div className="dob dob-month">
                         <label htmlFor="month">Month</label>
                         <select id="month">
                             <option value="01">January</option>
@@ -57,7 +57,7 @@ export default function SignUp() {
                         </select>
                     </div>
 
-                    <div className="dob">
+                    <div className="dob dob-day">
                         <label htmlFor="day">Day</label>
                         <select id="day">
                             {[...Array(31)].map((_, i) => (
@@ -68,7 +68,7 @@ export default function SignUp() {
                         </select>
                     </div>
 
-                    <div className="dob">
+                    <div className="dob dob-year">
                         <label htmlFor="year">Year</label>
                         <select id="year">
                             {Array.from({ length: 2004 - 1945 + 1 }, (_, i) => 2004 - i).map(
@@ -95,6 +95,7 @@ export default function SignUp() {
                     </div>
                 </div>
             </div>
+            <button id="signup-submit" type="submit">Submit</button>
         </div>
     );
 }
