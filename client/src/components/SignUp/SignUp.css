@@ -1,139 +1,222 @@
+/* =========================
+   SIGN UP CONTAINER + TITLE
+   ========================= */
+
 #sign-up-container {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.1rem;
-    width: 50vw;
-    margin: 160px auto;
-    background-color: #043927;
-    color: #d3d4d9;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  width: 50vw;
+  margin: 160px auto;
+
+  font-size: 1.3rem;
+  background-color: #043927;
+  color: #d3d4d9;
+
+  border: none;
+  border-radius: 8px;
+  box-shadow:
+    rgba(4, 57, 39, 0.25) 0px 50px 100px -20px,
+    rgba(4, 57, 39, 0.3) 0px 30px 60px -30px,
+    rgba(4, 57, 39, 0.35) 0px -2px 6px 0px inset;
+}
+
+#sign-up-container input {
     border: none;
     border-radius: 5px;
-    box-shadow: rgba(4, 57, 39, 0.25) 0px 50px 100px -20px, rgba(4, 57, 39, 0.3) 0px 30px 60px -30px, rgba(4, 57, 39, 0.35) 0px -2px 6px 0px inset;
+    box-shadow: 0px 19px 27px 5px  rgba(211,212,217,0.15);
+}
+
+#sign-up-container select {
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 19px 27px 5px  rgba(211,212,217,0.15);
 }
 
 #sign-up-title {
-    font-size: 28px;
-    margin-top: 80px;
+  font-size: 50px;
+  margin-top: 80px;
+  text-shadow: 1px 10px 18px rgba(211,212,217,0.4)
 }
 
 #sign-up {
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    margin-top: 50px;
-    padding: 25px;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-top: 50px;
+  padding: 25px;
 }
 
+#sign-up input {
+  font-size: 1rem;
+  font-weight: 800;
+  height: 25px;
+}
+
+/* =========================
+   NAME SECTION
+   ========================= */
+
 #name-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 #name-container label {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 .signup-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+}
+
+/* First / Middle / Last specific tweaks */
+
+.first label {
+    margin-top: 30px;
 }
 
 .first input {
-    width: 250px
+  width: 250px;
 }
 
-.middle {
-  width: 110px;
-  margin-left: 15px;
+.last label {
+    margin-top: 30px;
 }
 
 .last input {
-    width: 250px;
+  width: 250px;
+}
+
+.middle {
+    display: flex;
+    flex-direction: column;
+    
+ 
 }
 
 .middle label {
-    width: 110px;
+  width: 110px;
+  padding-left: 25px;
 }
 
 .middle input {
-    width: 25px;
+  width: 25px;
+  margin: 0 auto;
 }
 
+/* =========================
+   CONTACT INFO SECTION
+   ========================= */
+
 #contact-info-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 40px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 40px;
 }
 
 #contact-info-container label {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
-.email-contact{
-    width: 360px;
+.contact {
+  display: flex;
+  flex-direction: column;
 }
 
-.phone-contact{
-    width: 155px;
-    margin-right: 25px;
+/* Email */
+
+.email-contact {
+  width: 360px;
 }
 
 .email-contact input {
-    width: 350px;
+  width: 325px;
 }
 
-.phone-contact input{
-    width: 150px;
+/* Phone */
+
+.phone-contact {
+  width: 155px;
+  margin-right: 25px;
 }
 
-.email-contact input{
-    width: 325px;
+.phone-contact input {
+  width: 150px;
 }
+
+/* =========================
+   DATE OF BIRTH SECTION
+   ========================= */
 
 #date-of-birth-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 40px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 40px;
 }
 
 .dob {
-    display: flex;
-    flex-direction: column;
-}
-
-.dob-month {
-    margin-left: 50px;
-}
-
-.dob-year {
-    margin-right: 50px;
+  display: flex;
+  flex-direction: column;
 }
 
 .dob label {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
+.dob select {
+    font-size: 1.3rem;
+}
+
+.dob-month option {
+    font-size: 1rem;
+} 
+
+.dob-year {
+  margin-right: 50px;
+}
+
+/* =========================
+   PASSWORD SECTION
+   ========================= */
+
 #password-container {
-    display: flex;
-    margin: 40px 0 60px 0;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 0 60px 0;
 }
 
 .password {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .password label {
-    margin-bottom: 8px;
+  margin-bottom: 8px;
 }
 
-#signup-submit{
-    font-size: 1.2rem;
-    padding: 5px 20px;
-    margin-bottom: 40px;
-    border: none;
-    border-radius: 8px;
+/* =========================
+   SUBMIT BUTTON
+   ========================= */
+
+#signup-buttons {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
 }
+
+.signup-button {
+  font-size: 1.2rem;
+  padding: 5px 20px;
+  margin-bottom: 40px;
+
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0px 19px 27px 5px  rgba(211,212,217,0.15);
+}
+
+

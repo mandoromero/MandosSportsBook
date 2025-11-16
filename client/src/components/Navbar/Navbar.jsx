@@ -13,7 +13,7 @@ export default function Navbar() {
           </button>
         </Link>
 
-        <Link to="/sign-up">
+        <Link to="/signup">
           <button id="sign-up-btn" className="btn">
             Sign Up
           </button>

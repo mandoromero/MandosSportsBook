@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../SignUp/SignUp.css";
 
 export default function SignUp() {
@@ -5,7 +6,7 @@ export default function SignUp() {
         <div id="sign-up-container">
             <h2 id="sign-up-title">Sign Up</h2>
 
-            <div id="form sign-up">
+            <div id="sign-up">
 
               
                 <div id="name-container">
@@ -95,7 +96,12 @@ export default function SignUp() {
                     </div>
                 </div>
             </div>
-            <button id="signup-submit" type="submit">Submit</button>
+            <div id="signup-buttons">
+                <button id="signup-submit" className="signup-button" type="submit">Submit</button>
+                <Link to="/">
+                    <button id="signup-cancel" className="signup-button" type="button">Cancel</button>
+                </Link>
+            </div>
         </div>
     );
 }

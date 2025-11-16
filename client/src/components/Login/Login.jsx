@@ -21,7 +21,9 @@ export default function Login() {
       </p>
       <div id="login-buttons-container">
         <button id="login-submit" className="button">Enter</button>
-        <button id="login-cancel" className="button">Cancel</button>
+        <Link to="/">
+          <button id="login-cancel" className="button">Cancel</button>
+        </Link>
       </div>
     </div>
   );
