@@ -1,10 +1,10 @@
 import React from "react";
-import Profile from "../pages/Profile/Profile";
 
 export default function Home() {
   return (
     <div id="home-container">
-      <Profile />
+      <h1>Welcome to Mando's Sports Book!</h1>
+     
     </div>
   )
 }

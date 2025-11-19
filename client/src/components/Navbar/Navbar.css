@@ -1,6 +1,6 @@
 #nav-bar {
-    background-color: #043927;
-    color: #d3d4d9;
+    background-color: #404040;
+    color: #d3d5d7;
     display: flex;
     margin: 0;
     width: 100vw;
@@ -33,5 +33,12 @@ h1 {
     color: #043927;
     border: none;
     border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn:hover {
+    cursor: pointer;
+    background-color: #2e1f27;
+    color: #d3d5d7;
 }
 

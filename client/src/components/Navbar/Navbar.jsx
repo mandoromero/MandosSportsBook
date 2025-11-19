@@ -12,7 +12,9 @@ export default function Navbar() {
             Login
           </button>
         </Link>
-
+        <Link to="/profile">
+          <button id="profile-btn" className="btn">Profile</button>
+        </Link>
         <Link to="/signup">
           <button id="sign-up-btn" className="btn">
             Sign Up

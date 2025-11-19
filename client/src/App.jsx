@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar/Navbar";
 import Login from "./components/Login/Login";
 import SignUp from "./components/SignUp/SignUp";
 import ResetPassword from "./components/ResetPassword/ResetPassword";
+import Profile from "./pages/Profile/Profile";
 
 export default function App() {
   return (
@@ -16,9 +17,11 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/ResetPassword" element={<ResetPassword />} />      </Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
     </Router>
   );
 }
