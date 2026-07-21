@@ -1,0 +1,21 @@
+.pool-results {
+    padding: 20px;
+    overflow: auto;
+}
+
+table {
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+td, th {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: center;
+}
+
+.winner {
+    background: limegreen;
+    color: white;
+    font-weight: bold;
+}

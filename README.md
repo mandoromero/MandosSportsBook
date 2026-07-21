@@ -1,0 +1,1 @@
+fix the inside of the spots card: Design and why only 3 games displayed.

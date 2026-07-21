@@ -1,0 +1,158 @@
+#profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 4px ridge #228b22;
+    outline: 8px ridge #228b22;
+    outline-offset:6px;
+    width: 60%;
+    padding: 50px;
+    margin: 150px auto 0;
+    background-color: #043927;
+    color: #d3d4d9;
+    border-radius: 8px;
+    box-shadow:
+    rgba(4, 57, 39, 0.25) 0px 50px 100px -20px,
+    rgba(4, 57, 39, 0.3) 0px 30px 60px -30px,
+    rgba(4, 57, 39, 0.35) 0px -2px 6px 0px inset;
+}
+
+.profile-title {
+    margin-bottom: 50px;
+}
+
+.profile-header {
+    display: flex;
+    width: 95%;
+    padding: 15px;
+}
+
+.money {
+    display: flex;
+    gap:100px;
+}
+
+.balance-container {
+    width:75px;
+}
+
+#profile-name-contianer {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}  
+
+.profile-full-name,
+#profile-username {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+#profile-name {
+    display: flex;
+    gap: 5px;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.profile-name {
+    width: 100px;
+}
+
+.profile-input {
+    padding: 10px;
+    background-color: white;   
+    color: #043927;
+    border: none;
+    border-radius: 10px
+}
+
+
+
+.profile-username-container {
+    width: 35%;
+}
+
+.profile-username {
+    font-size: 1.5rem;
+}
+
+.gender {
+    margin-top: 8px;
+}
+
+.profile-gender-container {
+    width: 15%;
+    margin-left: 15px;
+    margin-top: 17px;
+}
+
+.profile-info {
+    display: flex;
+    gap: 50px;
+    margin-top: 50px;
+    font-size: 1.2rem;
+}
+
+#profile-info {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#profile-email-phone-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#profile-email {
+    width: 150px;
+}
+
+#profile-phone {
+    width: 150px;
+}
+
+.delete-link-wrapper {
+    text-decoration: none;
+    color: inheret;
+    display: inline-block;
+    transition: trnsform 0.2s ease;
+}
+
+.delete-link {
+    margin: 45px 0 0 250px;
+    color: #d3d5d7;
+    cursor: pointer;
+}
+
+.delete-link:hover {
+    color: #ffef00;
+    transform: scale(1.2);
+}
+
+.profile-password-input {
+    width: 200px;
+}
+
+.profile-btns-container {
+    display: flex;
+    gap: 100px;
+    margin-top: 25px;
+}
+
+.profile-btn {
+    font-size: 1.2rem;
+    padding: 5px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+        rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+        rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+        rgba(0, 0, 0, 0.17) 0px 12px 13px, 
+        rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}

@@ -1,0 +1,10 @@
+.home-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+}
+
+.main-title {
+  margin-top: 100px;
+}

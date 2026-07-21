@@ -1,0 +1,115 @@
+#login-container {
+    display: flex;
+    flex-direction: column;
+    width: 40vw;
+    height: 65vh;
+    margin: 160px auto;
+    color: #d3d5d7;
+    background-color: #043927;
+    justify-content: center;
+    align-items: center;
+    border: 4px ridge #228b22;
+    outline: 8px ridge #228b22;
+    outline-offset:6px;
+    border-radius: 8px;
+    box-shadow: rgba(4, 57, 39, 0.25) 0px 50px 100px -20px, rgba(4, 57, 39, 0.3) 0px 30px 60px -30px, rgba(4, 57, 39, 0.35) 0px -2px 6px 0px inset;
+}
+
+.login-title {
+    color: #d3d4d9;
+    margin-bottom: 20px;
+    font-size: 3rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.login-email-password-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.login-email-container, .login-password-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+.login-input {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    height: 25px;
+    font-size: 1.3rem;
+}
+
+.login label {
+    color: #d3d4d9;
+    font-size: 1.3rem;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.login input {
+    font-size: 1.3rem;
+}
+
+.login-input {
+    border: none;
+    border-radius: 8px;
+}
+
+.login-toggle-icon {
+    position: absolute;
+    right: 630px;
+    top: 65%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color:#043927;
+    font-size: 18px;
+    display: inline-block;
+    transition: trnsform 0.2s ease;
+}
+
+.login-toggle-icon:hover {
+    color: #228b22;
+    transform: scale(1.2);
+    top: 63.5;
+}
+
+.forgot-password a {
+    color: #d3d4d9;
+    text-decoration: none;
+    font-size: 0.8rem;
+    display: flex;
+    margin-top: 5px;
+    display: inline-block;
+    transition: trnsform 0.2s ease;
+}
+
+.forgot-password a:hover {
+    color: #eefe00;
+    transform: scale(1.2);
+}
+
+#login-buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.login-button {
+    font-size: 1.2rem;
+    padding: 5px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 8px;
+}
+

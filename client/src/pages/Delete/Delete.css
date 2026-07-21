@@ -1,0 +1,83 @@
+#delete-container {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    width: 400px;
+    background-color: #043927;
+    color: #a5a7a4;
+    margin: 200px auto 0 auto;
+    border: none;
+    border-radius: 8px;
+    border: 4px ridge #228b22;
+    outline: 8px ridge #228b22;
+    outline-offset: 6px;
+    box-shadow: rgba(4, 57, 39, 0.25) 0px 50px 100px -20px, rgba(4, 57, 39, 0.3) 0px 30px 60px -30px, rgba(4, 57, 39, 0.35) 0px -2px 6px 0px inset;
+}
+
+#delete-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%
+}
+
+#delete-title {
+    font-size: 3rem;
+    margin-top: 60px;
+}
+
+#delete-email-container,
+#delete-password-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 50px;
+    width: 100%;
+    gap: 20px;
+}
+
+#delete-email,
+#delete-password {
+    border: none;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    background-color: #d4d4d4;
+    width: 100%;
+    padding: 0 10px
+}
+
+.delete-toggle-icon {
+    position: absolute;
+    right: 550px;
+    top: 67%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color:#043927;
+    font-size: 18px;
+    display: inline-block;
+    transition: trnsform 0.2s ease;
+}
+
+.delete-toggle-icon:hover {
+    color: #228b22;
+    transform: scale(1.2);
+    top: 98%;
+}
+
+#delete-btn-container {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.delete-button {
+    font-size: 1.2rem;
+    padding: 5px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 8px;
+}

@@ -1,0 +1,95 @@
+.nfl-games-container {
+    padding: 50px;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.teams-container {
+    display: flex;
+}
+
+.pick-a-team {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: 25px;
+}
+
+.nfl-game {
+    border-right: 4px ridge #228b22;
+    border-bottom: 4px ridge #228b22;
+}
+
+.chosen-teams {
+    width: 50%;
+}
+
+.date-group {
+    padding: 15px;
+}
+
+.team-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.team {
+    margin: 5px 15px 0 0;
+    font-size: 2rem;
+}
+
+.vs {
+    margin: 0;
+}
+
+input[type="radio"] {
+    transform: scale(1.5);
+}
+
+.total-points-container {
+    margin: 20px 0;
+}
+
+.points-label {
+    font-size: 1.5rem;
+    
+}
+
+.total-points {
+    width: 50px;
+    height: 35px;
+    margin-left: 10px;
+    padding: 5px;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.picked-game-id {
+    margin-bottom: 5px;
+}
+
+.picked-team {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.nfl-game-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.nfl-game-btn {
+   font-size: 1.2rem;
+    padding: 5px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
+        rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+        rgba(0, 0, 0, 0.12) 0px 4px 6px, 
+        rgba(0, 0, 0, 0.17) 0px 12px 13px, 
+        rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}

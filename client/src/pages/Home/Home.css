@@ -1,0 +1,19 @@
+#home-container {
+    height: 100vh;
+    padding: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-title {
+    width: 800px;
+    margin: 0 auto 100px auto;
+    font-size: 3rem;
+}
+
+.sport-card-container {
+    display: flex;
+    flex-direction: row;
+    gap:75px;
+}

@@ -1,0 +1,151 @@
+#sign-up-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  width: 80vw;
+  margin: 160px auto;
+  padding-bottom: 100px;
+
+  font-size: 1.5rem;
+  background-color: #043927;
+  color: #d3d4d9;
+  width: 60%;
+  border: 4px ridge #228b22;
+  outline: 8px ridge #228b22;
+  outline-offset:6px;
+  border-radius: 8px;
+  box-shadow:
+    rgba(4, 57, 39, 0.25) 0px 50px 100px -20px,
+    rgba(4, 57, 39, 0.3) 0px 30px 60px -30px,
+    rgba(4, 57, 39, 0.35) 0px -2px 6px 0px inset;
+}
+
+#sign-up-title {
+  font-size: 3rem;
+  margin-top: 60px;
+}
+
+#sign-up {
+  width: 80%;
+}
+
+.signup-input {
+  border: none;
+  border-radius: 5px;
+  height: 25px;
+  font-size: 1.5rem;
+  font-weight: 550;
+  background-color: #d4d4d4;
+  margin-top: 10px;
+  width: 100%
+}
+
+#gender-identity {
+  font-size: 26px;
+}
+
+.radio-buttons {
+  padding-top: 25px;
+  display: flex;
+  gap: 30px;
+}
+
+.male,
+.female {
+  font-size: 26px;
+}
+
+#gender-identity-container,
+#id-container,
+#username-email,
+#signup-contact-container,
+#signup-password-verify-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+
+#signup-first-name-container,
+#signup-middle-initial-container,
+#signup-last-name-container,
+#signup-username-container,
+#signup-email-container,
+#signup-phone-container,
+#signup-dob-container,
+#signup-password-container,
+#signup-verify-container {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+#signup-middle-initial-container {
+  width: 20px;
+}
+
+#signup-error {
+  color: red;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  right:800px;
+  top: 120%;
+  cursor: pointer;
+  color: black;
+  font-size: 16px;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.password-toggle-icon:hover {
+  color: #228b22;
+  transform: scale(1.2);
+}
+
+.verify-toggle-icon {
+  position: absolute;
+  right: 445px;
+  top: 121%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color:#043927;
+  font-size: 16px;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.verify-toggle-icon:hover {
+  color: #228b22;
+  transform: scale(1.2);
+  top: 101.5%;
+}
+
+#submit-button-container {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto; 
+  width: 150px;
+  justify-content: space-between;
+  width: 35%;
+
+}
+
+.signup-btn {
+  font: 1.5rem;
+  font-weight:650;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px
+}
+
+.signup-btn:hover {
+  background-color: gray;
+}
