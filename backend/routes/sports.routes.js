@@ -3,7 +3,7 @@ import axios from "axios";
 
 const router = express.Router();
 
-
+console.log("✅ sports.routes.js loaded");
 
 router.get("/:sport/games", async (req, res) => {
   try {
