@@ -3,6 +3,8 @@ import axios from "axios";
 
 const router = express.Router();
 
+
+
 router.get("/:sport/games", async (req, res) => {
   try {
     const { sport } = req.params;

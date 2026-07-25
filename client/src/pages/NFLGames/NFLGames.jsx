@@ -19,7 +19,7 @@ export default function NFLGames() {
     const fetchGames = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/sports/odds/americanfootball_nfl",
+          "http://1/api/sports/odds/americanfootball_nfl",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -168,7 +168,7 @@ export default function NFLGames() {
       });
 
       await axios.post(
-        "http://localhost:5000/api/member-picks",
+        "http://localhost:5001/api/member-picks",
         {
           week: 1,
           picks,

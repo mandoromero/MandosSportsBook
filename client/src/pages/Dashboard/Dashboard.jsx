@@ -8,7 +8,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/sports/games")
+      .get("http://localhost:5001/api/sports/games")
       .then((res) => {
         console.log(res.data);
         setGames(res.data.response);

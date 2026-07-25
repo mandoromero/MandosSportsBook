@@ -29,7 +29,7 @@ export default function Delete() {
         localStorage.getItem("token");
 
       await axios.delete(
-        "http://localhost:5000/api/auth/delete-account",
+        "http://localhost:5001/api/auth/delete-account",
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -40,7 +40,7 @@ export default function SignUp() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/check-email",
+        "http://localhost:5001/api/auth/check-email",
         {email}
       );
 
@@ -76,7 +76,7 @@ export default function SignUp() {
       const { verifyPassword, ...userData } = formData;
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/signup",
+        "http://localhost:5001/api/auth/signup",
         userData
       );
 

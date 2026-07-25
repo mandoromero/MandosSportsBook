@@ -15,7 +15,7 @@ export default function NFLPoolResults() {
             const token=localStorage.getItem("token");
 
             const res=await axios.get(
-                "http://localhost:5000/api/nfl-pool-results/1",
+                "http://localhost:5001/api/nfl-pool-results/1",
                 {
                     headers:{
                         Authorization:`Bearer ${token}`
