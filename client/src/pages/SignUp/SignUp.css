@@ -96,8 +96,8 @@
 
 .password-toggle-icon {
   position: absolute;
-  right:800px;
-  top: 120%;
+  right:702px;
+  top: 102%;
   cursor: pointer;
   color: black;
   font-size: 16px;
@@ -112,11 +112,11 @@
 
 .verify-toggle-icon {
   position: absolute;
-  right: 445px;
-  top: 121%;
+  right: 390px;
+  top: 103%;
   transform: translateY(-50%);
   cursor: pointer;
-  color:#043927;
+  color:black;
   font-size: 16px;
   display: inline-block;
   transition: transform 0.2s ease;
@@ -125,7 +125,6 @@
 .verify-toggle-icon:hover {
   color: #228b22;
   transform: scale(1.2);
-  top: 101.5%;
 }
 
 #submit-button-container {

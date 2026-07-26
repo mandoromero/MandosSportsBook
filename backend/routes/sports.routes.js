@@ -3,42 +3,110 @@ import axios from "axios";
 
 const router = express.Router();
 
-console.log("✅ sports.routes.js loaded");
+const BASE_URL = "https://api.the-odds-api.com/v4";
 
-router.get("/:sport/games", async (req, res) => {
+/* =========================
+   GET ODDS BY SPORT
+========================= */
+router.get("/odds/:sport", async (req, res) => {
   try {
+    if (!process.env.ODDS_API_KEY) {
+      return res.status(500).json({
+        message: "Missing ODDS_API_KEY in .enf",
+      });
+    }
     const { sport } = req.params;
 
-    let baseURL;
+    const allowedSports = [
+      "americanfootball_nfl",
+      "basketball_nba",
+      "icehockey_nhl",
+      "baseball_mlb"
+    ];
 
-    if (sport === "baseball") {
-      baseURL = process.env.SPORTS_BASEBALL_URL;
-    } else if (sport === "basketball") {
-      baseURL = process.env.SPORTS_BASKETBALL_URL;
-    } else if (sport === "hockey") {
-      baseURL = process.env.SPORTS_HOCKEY_URL;
-    } else {
+    if (!allowedSports.includes(sport)) {
       return res.status(400).json({
         message: "Invalid sport",
+        allowedSports
       });
     }
 
     const response = await axios.get(
-      `${baseURL}/games`,
+      `${BASE_URL}/sports/${sport}/odds`,
       {
-        headers: {
-          "x-apisports-key": process.env.SPORTS_API_KEY,
+        params: {
+          apiKey: process.env.ODDS_API_KEY,
+          regions: "us",
+          markets: "h2h",
+          oddsFormat: "american",
+        }
+      }
+    );
+
+    return res.json(response.data);
+
+  } catch (err) {
+
+    console.error("Odds API error:", err.response?.data || err.message);
+
+    return res.status(500).json({
+      message: "Failed to fetch odds"
+    });
+  }
+});
+
+/*===========================
+  Events Route
+===========================*/
+router.get("/events/:sport", async (req, res) => {
+  try {
+    const { sport } = req.params;
+
+    const response = await axios.get(
+      `${BASE_URL}/sports/${sport}/events`,
+      {
+        params: {
+          apiKey: process.env.ODDS_API_KEY,
         },
       }
     );
 
     res.json(response.data);
+  } catch (err) {
+    console.error(
+      "Events API error:",
+      err.response?.data || err.message
+    );
 
-  } catch (error) {
-    console.error(error.message);
+    return res.status(500).json({
+      message: "Failed to fetch events",
+    });
+  }
+});
 
-    res.status(500).json({
-      message: "Failed to fetch games",
+/* =========================
+   GET ALL SPORTS
+========================= */
+router.get("/", async (req, res) => {
+  try {
+    if (!process.env.ODDS_API_KEY) {
+      return res.status(500).json({
+        message: "Missing ODDS_API_KEY in .env",
+      });
+    }
+
+    const response = await axios.get(`${BASE_URL}/sports`, {
+      params: {
+        apiKey: process.env.ODDS_API_KEY,
+      },
+    });
+
+    return res.json(response.data);
+  } catch (err) {
+    console.error("❌ Sports API error:", err.response?.data || err.message);
+
+    return res.status(500).json({
+      message: "Failed to fetch sports list",
     });
   }
 });

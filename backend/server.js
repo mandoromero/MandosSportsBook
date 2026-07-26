@@ -9,6 +9,8 @@ import weeklyGameRoutes from "./routes/weeklyGames.js";
 import memberPicksRoutes from "./routes/memberPicks.js";
 import nflPoolResultsRoutes from "./routes/nflPoolResultsRoutes.js";
 
+console.log("sportsRoutes = ", sportsRoutes);
+
 dotenv.config();
 
 console.log("JWT_SECRET:", process.env.JWT_SECRET);
