@@ -56,13 +56,15 @@ router.post("/signup", async (req, res) => {
       firstName,
       middleInitial,
       lastName,
+      gender,
+      username,
       email,
       phone,
       dob,
       password,
     } = req.body;
 
-    if (!firstName || !lastName || !email || !dob || !password) {
+    if (!firstName || !lastName || !username || !email || !dob || !password) {
       return res.status(400).json({
         message: "Missing required fields",
       });
@@ -87,22 +89,26 @@ router.post("/signup", async (req, res) => {
         first_name,
         middle_initial,
         last_name,
+        gender,
+        username,
         email,
         phone,
         dob,
-        password_hash
+        password_hash,
       )
-      VALUES ($1,$2,$3,$4,$5,$6,$7)
-      RETURNING id, first_name, last_name, email, dob
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8 ,$9)
+      RETURNING id, first_name, last_name, gender, username, email, dob
       `,
       [
         firstName,
         middleInitial || null,
         lastName,
+        gender,
+        username,
         email,
         phone || null,
         dob,
-        hashedPassword,
+        password,
       ]
     );
 
@@ -112,9 +118,11 @@ router.post("/signup", async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("SIGNUP ERROR:", error);
     return res.status(500).json({
-      message: "Signup error",
+      message: "error.message",
+      detail: error.detail,
+      code: error.code,
     });
   }
 });
@@ -218,9 +226,11 @@ router.post("/reset-password/:token", async (req, res) => {
     }); 
 
   } catch (error) {
-    console.error(error);
+    console.error("SIGNUP ERROR:", error);
     return res.status(500).json({
-      message: "Server error",
+      message: error.message,
+      detail: error.detail,
+      code: error.code,
     });
   }
 });
