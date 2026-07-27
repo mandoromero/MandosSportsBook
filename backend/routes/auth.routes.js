@@ -3,6 +3,13 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import pool from "../config/db.js";
+import {
+  signup,
+  login,
+  forgotPassword,
+  resetPassword,
+  checkEmail,
+} from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
@@ -42,7 +49,9 @@ router.post("/check-email", async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({
-      message: "Server error",
+      message: error.message,
+      detail: error.detail,
+      code: error.code,
     });
   }
 });
@@ -94,7 +103,7 @@ router.post("/signup", async (req, res) => {
         email,
         phone,
         dob,
-        password_hash,
+        password_hash
       )
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8 ,$9)
       RETURNING id, first_name, last_name, gender, username, email, dob
@@ -108,7 +117,7 @@ router.post("/signup", async (req, res) => {
         email,
         phone || null,
         dob,
-        password,
+        hashedPassword,
       ]
     );
 
@@ -119,8 +128,9 @@ router.post("/signup", async (req, res) => {
 
   } catch (error) {
     console.error("SIGNUP ERROR:", error);
+
     return res.status(500).json({
-      message: "error.message",
+      message: error.message,
       detail: error.detail,
       code: error.code,
     });
@@ -159,18 +169,23 @@ router.post("/forgot-password", async (req, res) => {
       [resetToken, expires, email]
     );
 
-    const resetURL = `http://localhost:5173/reset-password/${resetToken}`;
+    const resetURL =
+      `http://localhost:5174/reset-password/${token}`;
 
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Reset Your Password",
-      html: `
-        <h2>Password Reset</h2>
-        <p>Click below to reset:</p>
-        <a href="${resetURL}">Reset Password</a>
-      `,
-    });
+  from: process.env.EMAIL_USER,
+  to: normalizedEmail,
+  subject: "Password Reset",
+  html: `
+    <p>Click below to reset your password:</p>
+
+    resetURL}">
+      Reset Password
+    </a>
+
+    <p>${resetURL}</p>
+  `,
+});
 
     return res.json({
       message: "Reset email sent",
@@ -210,16 +225,20 @@ router.post("/reset-password/:token", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await pool.query(
-      `
-      UPDATE members
-      SET password_hash = $1,
-          reset_token = NULL,
-          reset_token_expires = NULL
-      WHERE id = $2
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: normalizedEmail,
+      subject: "Password Reset",
+      html: `
+        <p>Click below to reset your password:</p>
+
+        resetURL}">
+          Reset Password
+        </a>
+
+        <p>${resetURL}</p>
       `,
-      [hashedPassword, user.rows[0].id]
-    );
+    });
 
     return res.json({
       message: "Password updated",

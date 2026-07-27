@@ -22,7 +22,7 @@ export default function SignUp() {
     verifyPassword: "",
   });
 
-  const passwordsMatch = formData.verifyPasswords;
+  const passwordsMatch = formData.password === formData.verifyPassword;
 
   const navigate = useNavigate();
 
@@ -113,6 +113,8 @@ export default function SignUp() {
                 type="radio" 
                 name="gender"
                 value="Male"
+                checked={formData.gender === "Male"}
+                onChange={handleChange}
               />
               Male
             </label>
@@ -121,6 +123,8 @@ export default function SignUp() {
                 type="radio"
                 name="gender"
                 value="Female"
+                checked={formData.gender === "Female"}
+                onChange={handleChange}
               />
               Female
             </label>
@@ -284,7 +288,7 @@ export default function SignUp() {
           <button
             id="submit-btn"
             className="signup-btn" 
-            type="signup-submit"
+            type="submit"
           >
             Submit
           </button>
