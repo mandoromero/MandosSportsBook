@@ -1,10 +1,10 @@
 .sports-card {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
   color: #fff;
-  width: 350px;
-  height: 600px;
+  width: 400px;
+  height: 700px;
   margin: 50px auto;
   font-size: 1.5rem;
   background-color: #043927;
@@ -19,6 +19,7 @@
     rgba(4, 57, 39, 0.3) 0px 30px 60px -30px,
     rgba(4, 57, 39, 0.35) 0px -2px 6px 0px inset;
 }
+
 
 .sports-games {
   flex: 1;
