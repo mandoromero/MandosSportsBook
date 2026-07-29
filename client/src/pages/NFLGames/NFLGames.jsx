@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import "../NFLGames/NFLGames.css";
 import { useNavigate } from "react-router-dom";
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 
 export default function NFLGames() {
   const token = localStorage.getItem("token");
@@ -12,14 +13,13 @@ export default function NFLGames() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalPoints, setTotalPoints] = useState("");
-  const { store, dispatch }= useGlobalReducer();
-  const SelectedTeam = store.selectedTeam;
-
+  const [selectedTeam, setSelectedTeam] = useState({});
+ 
   useEffect(() => {
     const fetchGames = async () => {
       try {
         const res = await axios.get(
-          "http://1/api/sports/odds/americanfootball_nfl",
+          "http://localhost:5001/api/sports/odds/americanfootball_nfl",
           {
             headers: {
               Authorization: `Bearer ${token}`,
