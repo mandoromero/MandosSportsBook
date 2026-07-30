@@ -147,13 +147,15 @@ export default function NFLGames() {
     return <h2>Loading NFL Games...</h2>;
   }
 
+  /*========================
+      SUBMIT PICKS
+  ========================*/
   const handleSubmitPicks = async () => {
-    console.log(selectedTeam);
+    console.log("Selected Teams:", selectedTeam);
     try {
       const picks = Object.entries(selectedTeam).map(([gameId, pick]) => ({
         game_id: gameId,
-        picked_team: pick.pick,
-        total_points: pick.isMondayNight ? totalPoints : null,
+        picked_team: pick.team,
       }));
 
       console.log("Sending token:", token);
@@ -164,6 +166,7 @@ export default function NFLGames() {
 
       console.log("Payload:", {
         week: 1,
+        mondayTotalPoints: totalPoints,
         picks,
       });
 
@@ -171,19 +174,28 @@ export default function NFLGames() {
         "http://localhost:5001/api/member-picks",
         {
           week: 1,
+          mondayTotalPoints: totalPoints,
           picks,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+      console.log("Picks submitted:", res.data);
+    
+      alert("Picks submittted successfully!");
 
       navigate("/nfl-pool-results");
+
     } catch (err) {
       console.error("Error submitting picks:", err);
-      alert("Unable to submit picks.");
+
+      alertz9
+        err.response?.data?.message ||
+        "Unable to submit picks."
     }
   };
 
