@@ -15,38 +15,29 @@ router.post("/", protect, async (req, res) => {
     await client.query("BEGIN");
 
     const memberId = req.user.id;
-    const { week, picks } = req.body;
+    const { week, mondayTotalPoints, picks } = req.body;
 
     console.log("Member:", memberId);
     console.log("Week:", week);
 
-    // Generate a random 6-character entry code
-    const entryCode = crypto
-      .randomBytes(4)
-      .toString("hex")
-      .substring(0, 6)
-      .toUpperCase();
+    // Generate entry code (optional)
+    const entryCode = crypto.randomBytes(4).toString("hex").substring(0, 6).toUpperCase();
 
     /*-------------------------
         CREATE ENTRY
     --------------------------*/
-
     const entryResult = await client.query(
       `
-      INSERT INTO nfl_pool_entries
+      INSERT INTO pick_cards
       (
-        entry_code,
         member_id,
-        week
+        week,
+        monday_total_points
       )
-      VALUES ($1,$2,$3)
+      VALUES ($1, $2, $3)
       RETURNING id
       `,
-      [
-        entryCode,
-        memberId,
-        week
-      ]
+      [memberId, week, mondayTotalPoints]
     );
 
     const entryId = entryResult.rows[0].id;
@@ -56,28 +47,20 @@ router.post("/", protect, async (req, res) => {
     /*-------------------------
         SAVE PICKS
     --------------------------*/
-
     for (const pick of picks) {
-
       console.log("Saving:", pick);
 
       await client.query(
         `
-        INSERT INTO nfl_pool_picks
+        INSERT INTO card_picks
         (
-          entry_id,
+          card_id,
           game_id,
-          picked_team,
-          total_points
+          picked_team
         )
-        VALUES ($1,$2,$3,$4)
+        VALUES ($1, $2, $3)
         `,
-        [
-          entryId,
-          pick.game_id,
-          pick.picked_team,
-          pick.total_points
-        ]
+        [entryId, pick.game_id, pick.picked_team]
       );
     }
 
@@ -91,13 +74,14 @@ router.post("/", protect, async (req, res) => {
     });
 
   } catch (err) {
-
     await client.query("ROLLBACK");
 
-    console.error(err);
+    console.error("🔥 BACKEND ERROR:", err.message);
+    console.error("🔥 STACK:", err.stack);
 
     res.status(500).json({
-      message: "Unable to submit picks."
+      message: "Unable to submit picks.",
+      error: err.message
     });
 
   } finally {

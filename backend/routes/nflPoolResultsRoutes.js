@@ -14,7 +14,6 @@ router.get("/:week", async (req, res) => {
     /*----------------------------------
       GET THIS WEEK'S GAMES
     ----------------------------------*/
-
     const games = await pool.query(
       `
       SELECT
@@ -32,47 +31,42 @@ router.get("/:week", async (req, res) => {
     /*----------------------------------
       GET EVERY ENTRY
     ----------------------------------*/
-
     const entries = await pool.query(
       `
       SELECT
           e.id AS entry_id,
-          e.entry_code,
           e.member_id,
           e.week,
-          e.submitted_at,
+          e.monday_total_points,
           m.username
-      FROM nfl_pool_entries e
-      JOIN members m
-          ON m.id = e.member_id
+      FROM pick_cards e
+      JOIN members m ON m.id = e.member_id
       WHERE e.week = $1
-      ORDER BY
-          m.username,
-          e.submitted_at
+      ORDER BY m.username, e.id
       `,
       [week]
     );
 
     /*----------------------------------
-      GET PICKS
+      GET PICKS FOR EACH ENTRY
     ----------------------------------*/
-
     const picks = await pool.query(
       `
       SELECT
-          entry_id,
-          game_id,
-          picked_team,
-          total_points
-      FROM nfl_pool_picks
-      ORDER BY entry_id
-      `
+          cp.card_id,
+          cp.game_id,
+          cp.picked_team
+      FROM card_picks cp
+      JOIN pick_cards e ON e.id = cp.card_id
+      WHERE e.week = $1
+      ORDER BY cp.card_id, cp.game_id
+      `,
+      [week]
     );
 
     /*----------------------------------
       GET FINAL RESULTS
     ----------------------------------*/
-
     const results = await pool.query(
       `
       SELECT *
@@ -89,14 +83,13 @@ router.get("/:week", async (req, res) => {
     });
 
   } catch (err) {
-
+    console.error("🔥 RESULTS ROUTE ERROR:", err.message);
     console.error(err);
 
     res.status(500).json({
       success: false,
       message: "Unable to load NFL Pool Results."
     });
-
   }
 });
 

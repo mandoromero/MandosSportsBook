@@ -4,6 +4,9 @@ import pool from "../config/db.js";
 
 const router = express.Router();
 
+/* =========================
+   TEST ROUTE
+========================= */
 router.get("/test", (req, res) => {
   res.json({
     message: "Weekly games route is working"
@@ -11,7 +14,7 @@ router.get("/test", (req, res) => {
 });
 
 /* =========================
-   IMPORT WEEKLY GAMES
+   IMPORT WEEKLY NFL GAMES
 ========================= */
 
 router.post("/import", async (req, res) => {
@@ -29,9 +32,17 @@ router.post("/import", async (req, res) => {
 
     const games = response.data;
 
-    // DEBUG HERE
+    if (!games || games.length === 0) {
+      return res.status(400).json({
+        message: "No games returned from Odds API"
+      });
+    }
+
     console.log("Games received:", games.length);
-    console.log(games[0]);
+    console.log("Sample game:", games[0]);
+
+    // TODO: Replace with dynamic week logic later
+    const week = 1;
 
     for (const game of games) {
       const gameDate = new Date(game.commence_time);
@@ -41,9 +52,8 @@ router.post("/import", async (req, res) => {
         timeZone: "UTC",
       });
 
-      const isMondayNight = games.is_monday_night;
-
-      const week = 1;
+      // Monday Night Football flag
+      const isMondayNight = weekday === "Monday";
 
       await pool.query(
         `
@@ -55,7 +65,7 @@ router.post("/import", async (req, res) => {
           commence_time,
           is_monday_night
         )
-        VALUES ($1,$2,$3,$4,$5,$6)
+        VALUES ($1, $2, $3, $4, $5, $6)
         ON CONFLICT (game_id)
         DO NOTHING
         `,
@@ -76,10 +86,11 @@ router.post("/import", async (req, res) => {
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("🔥 IMPORT ERROR:", err.message);
 
     res.status(500).json({
       error: "Unable to import games.",
+      details: err.message,
     });
   }
 });
