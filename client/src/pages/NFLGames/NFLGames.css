@@ -5,6 +5,19 @@
     flex-direction: column;
 }
 
+.nfl-games-title {
+    display: flex;
+    justify-content: center;
+
+}
+
+.games-chosen {
+    Width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+}
+
 /* .nfl-games-container {
     padding: 50px;
     margin-top: 50px;

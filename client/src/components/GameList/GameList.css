@@ -1,4 +1,5 @@
 .game-list-container {
     width: 50%;
-    background-color: #043927;
+    /* background-color: #043927; */
+    padding: 20px;
 }

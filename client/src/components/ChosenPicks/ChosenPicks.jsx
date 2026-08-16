@@ -1,4 +1,5 @@
 import axios from "axios";
+import "../ChosenPicks/ChosenPicks.css";
 
 export default function ChosenPicks({
   selectedTeam,
@@ -33,8 +34,8 @@ export default function ChosenPicks({
   };
 
   return (
-    <div className="chosen-teams">
-      <h2>Your Picks</h2>
+    <div className="chosen-picks-container">
+      <h2 className="your-picks">Your Picks</h2>
 
       {Object.keys(selectedTeam).length === 0 ? (
         <p>No teams selected.</p>

@@ -10,13 +10,13 @@ function picksReducer(state, action) {
     case "SELECT_TEAM":
       return {
         ...state,
-        selectedTeam: {
-          ...state.selectedTeam,
-          [action.game.id]: action.payload
-        }
+        selectedTeam: action.payload
       };
+
+
     case "SET_POINTS":
       return { ...state, totalPoints: action.payload };
+
     default:
       return state;
   }
@@ -26,6 +26,22 @@ export default function usePicks() {
   const [state, dispatch] = useReducer(picksReducer, initialState);
 
   const selectTeam = (game, pick) => {
+    const currentPick = state.selectedTeam[game.id]?.pick;
+
+    // ⭐ If user clicks the SAME team again → unselect it
+    if (currentPick === pick) {
+      const updated = { ...state.selectedTeam };
+      delete updated[game.id];
+
+      dispatch({
+        type: "SELECT_TEAM",
+        payload: updated
+      });
+
+      return;
+    }
+
+    // ⭐ Otherwise → set the new pick
     const weekday = new Date(game.commence_time).toLocaleDateString("en-US", {
       weekday: "long"
     });
@@ -34,12 +50,14 @@ export default function usePicks() {
 
     dispatch({
       type: "SELECT_TEAM",
-      game,
       payload: {
-        pick,
-        team: pick === "A" ? game.away_team : game.home_team,
-        commence_time: game.commence_time,
-        isMondayNight
+        ...state.selectedTeam,
+        [game.id]: {
+          pick,
+          team: pick === "A" ? game.away_team : game.home_team,
+          commence_time: game.commence_time,
+          isMondayNight
+        }
       }
     });
   };

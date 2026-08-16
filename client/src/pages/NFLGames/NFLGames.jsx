@@ -15,45 +15,47 @@ export default function NFLGames() {
 
   const nflWeek =
     games.length > 0 ? getNFLWeek(new Date(games[0].commence_time)) : null;
+  
+  const gamesByWeek = games.length > 0
+  ? games.reduce((acc, game) => {
+      const gameDate = new Date(game.commence_time);
+      const week = getNFLWeek(gameDate);
 
-  const gamesByDate = games.reduce((acc, game) => {
-    const date = new Date(game.commence_time).toLocaleDateString("en-US", {
-      weekday: "long",
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
+      if (!acc[week]) acc[week] = [];
+      acc[week].push(game);
 
-    if (!acc[date]) acc[date] = [];
-    acc[date].push(game);
+      return acc;
+    }, {})
+  : {};
 
-    return acc;
-  }, {});
+
 
   return (
     <div className="nfl-games-container">
-      <h1 className="nfl-games-title">NFL Weekly Schedule</h1>
+      <h1 className="nfl-games-title">NFL Week {nflWeek} Schedule</h1>
 
-      {loading ? (
-        <h2>Loading NFL Games...</h2>
-      ) : (
-        <>
-          <GameList
-            gamesByDate={gamesByDate}
-            selectedTeam={state.selectedTeam}
-            handleTeamSelect={selectTeam}
-          />
+      <div className="games-chosen">
+        {loading ? (
+          <h2>Loading NFL Games...</h2>
+        ) : (
+          <>
+            <GameList
+              gamesByWeek={gamesByWeek}
+              selectedTeam={state.selectedTeam}
+              handleTeamSelect={selectTeam}
+            />
 
-          <ChosenPicks
-            selectedTeam={state.selectedTeam}
-            totalPoints={state.totalPoints}
-            setTotalPoints={setPoints}
-            nflWeek={nflWeek}
-            token={token}
-            navigate={navigate}
-          />
-        </>
-      )}
+            <ChosenPicks
+              selectedTeam={state.selectedTeam}
+              totalPoints={state.totalPoints}
+              setTotalPoints={setPoints}
+              nflWeek={nflWeek}
+              token={token}
+              navigate={navigate}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 }

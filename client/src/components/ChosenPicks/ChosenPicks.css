@@ -1,0 +1,14 @@
+.chosen-picks-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.your-picks {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.picked-team {
+    font-size: 2rem;
+    margin-top: 10px;
+}
