@@ -1,19 +1,22 @@
+import "../GameItem/GameItem.css";
+
 export default function GameItem({ game, selectedTeam, handleTeamSelect }) {
   return (
-    <div className="nfl-game">
+    <div className="game-item-container">
       <span className="game-id">Game ID: {game.id}</span>
 
-      <div classNames="game-time">
+      <p className="game-time">
         {new Date(game.commence_time).toLocaleTimeString("en-US", {
           hour: "numeric",
           minute: "2-digit",
         })}
-      </div>
+      </p>
 
       <div className="game-matchup">
         <label className="team-container">
           <span className="team">{game.away_team}</span>
           <input
+          className="team-input"
             type="radio"
             name={game.id}
             checked={selectedTeam[game.id]?.pick === "A"}
@@ -21,7 +24,7 @@ export default function GameItem({ game, selectedTeam, handleTeamSelect }) {
           />
         </label>
 
-        <span className="at">vs.</span>
+        <span className="vs">vs.</span>
 
         <label className="team-container">
           <span className="team">{game.home_team}</span>

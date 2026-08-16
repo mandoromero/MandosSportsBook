@@ -1,3 +1,4 @@
-game-list-container {
-    border: 1px dashed red;
+.game-list-container {
+    width: 50%;
+    background-color: #043927;
 }
