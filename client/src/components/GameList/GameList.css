@@ -1,5 +1,18 @@
 .game-list-container {
-    width: 50%;
+    width: 35%;
     /* background-color: #043927; */
     padding: 20px;
+    border: 1px dashed red;
+    margin-right: 100px;
+}
+
+.week-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.week-heading {
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 2.5rem;
 }

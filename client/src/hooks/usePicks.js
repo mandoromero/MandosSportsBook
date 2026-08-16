@@ -28,10 +28,15 @@ export default function usePicks() {
   const selectTeam = (game, pick) => {
     const currentPick = state.selectedTeam[game.id]?.pick;
 
+    console.log("Current pick:", currentPick);
+    console.log("SelectedTeam BEFORE:", state.selectedTeam);
+
     // ⭐ If user clicks the SAME team again → unselect it
     if (currentPick === pick) {
       const updated = { ...state.selectedTeam };
       delete updated[game.id];
+
+      console.log("Updated AFTER delete:", updated);
 
       dispatch({
         type: "SELECT_TEAM",
@@ -48,19 +53,24 @@ export default function usePicks() {
 
     const isMondayNight = weekday === "Monday";
 
+    const updated = {
+      ...state.selectedTeam,
+      [game.id]: {
+        pick,
+        team: pick === "A" ? game.away_team : game.home_team,
+        commence_time: game.commence_time,
+        isMondayNight
+      }
+    };
+
+    console.log("Updated AFTER new pick:", updated);
+
     dispatch({
       type: "SELECT_TEAM",
-      payload: {
-        ...state.selectedTeam,
-        [game.id]: {
-          pick,
-          team: pick === "A" ? game.away_team : game.home_team,
-          commence_time: game.commence_time,
-          isMondayNight
-        }
-      }
+      payload: updated
     });
   };
+
 
   const setPoints = (points) => {
     dispatch({ type: "SET_POINTS", payload: points });

@@ -16,11 +16,13 @@ export default function GameItem({ game, selectedTeam, handleTeamSelect }) {
         <label className="team-container">
           <span className="team">{game.away_team}</span>
           <input
-          className="team-input"
+            className="team-input"
             type="radio"
-            name={game.id}
+            name={`pick-${game.id}`}
+            value="A"
             checked={selectedTeam[game.id]?.pick === "A"}
-            onChange={() => handleTeamSelect(game, "A")}
+            onClick={() => handleTeamSelect(game, "A")}
+            readOnly
           />
         </label>
 
@@ -30,9 +32,11 @@ export default function GameItem({ game, selectedTeam, handleTeamSelect }) {
           <span className="team">{game.home_team}</span>
           <input
             type="radio"
-            name={game.id}
+            name={`pick-${game.id}`}
+            value="H"
             checked={selectedTeam[game.id]?.pick === "H"}
-            onChange={() => handleTeamSelect(game, "H")}
+            onClick={() => handleTeamSelect(game, "H")}
+            readOnly
           />
         </label>
       </div>
