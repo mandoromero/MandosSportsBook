@@ -3,16 +3,19 @@
     margin-top: 50px;
     display: flex;
     flex-direction: column;
+    background-color: #043927;
 }
 
 .nfl-games-title {
     display: flex;
     justify-content: center;
+    color: #d3d4d9;
 
 }
 
 .games-chosen {
     Width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: row;
     margin-top: 30px;

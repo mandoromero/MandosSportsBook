@@ -1,15 +1,33 @@
 .chosen-picks-container {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    overflow-y: auto;  
+    overflow-x: hidden;
     padding: 25px;
-    width: 50%;
-    border: 1px dashed red;
+    width: 35%;
+    height: 900px;
+    border: 4px groove #228b22;
+    border-radius: 10px;
+    background-color: #d3d4d9;
+    color: #043927;
 }
 
-.your-picks {
-    margin-left: auto;
+.your-picks-heading-container {
+    margin-top: 0;
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #d3d4d9;
+    border-bottom: 4px groove #228b22;
+}
+
+.your-picks-heading {
     margin-right: auto;
+    margin-left: auto;
     font-size: 2.5rem;
+    background-color: #d3d4d9;
 }
 
 .chosen-team {
@@ -25,4 +43,29 @@
     margin-top: 15px;
     padding-bottom: 10px;
     border-bottom: 1px solid black;
+}
+
+.total-points-container {
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+
+.total-points-input {
+    margin-left: 10px;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    font-size: 1.5rem;
+}
+
+.nfl-game-btn {
+    font-size: 1.5rem;
+    width: 100px;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: none;
+    background-color: #043927;
+    color: #d3d4d9;
+    margin-right: auto;
+    margin-left: auto;
 }

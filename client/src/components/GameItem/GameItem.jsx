@@ -31,6 +31,7 @@ export default function GameItem({ game, selectedTeam, handleTeamSelect }) {
         <label className="team-container">
           <span className="team">{game.home_team}</span>
           <input
+            className="team-input"
             type="radio"
             name={`pick-${game.id}`}
             value="H"

@@ -27,11 +27,35 @@
     font-size: 2rem;
 }
 
-.team-input,
+/* .team-input,
 input[type="radio"] {
     width: 30px;
     height: 30px;
+    color: #043927;
+} */
+
+.team-input {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #043927;
+  border-radius: 50%;
+  position: relative;
+  cursor: pointer;
 }
+
+/* The check mark */
+.team-input:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  background-color: #043927; /* ⭐ change this to any color */
+  border-radius: 50%;
+}
+
 
 
 .vs {

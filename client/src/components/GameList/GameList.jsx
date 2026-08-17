@@ -31,7 +31,9 @@ export default function GameList({ gamesByWeek, selectedTeam, handleTeamSelect }
 
           return (
             <div key={week} className="week-group">
-              <h2 className="week-heading">Week {week}</h2>
+              <div className="week-heading-container">
+                <h2 className="week-heading">Week {week}</h2>
+              </div>
 
               {Object.entries(gamesByDate).map(([date, dateGames]) => (
                 <div key={date} className="date-group">

@@ -35,7 +35,10 @@ export default function ChosenPicks({
 
   return (
     <div className="chosen-picks-container">
-      <h2 className="your-picks">Your Picks</h2>
+      <div className="your-picks-heading-container">
+        <h2 className="your-picks-heading">Your Picks</h2>
+      </div>
+    
 
       {Object.keys(selectedTeam).length === 0 ? (
         <p>No teams selected.</p>
@@ -52,6 +55,7 @@ export default function ChosenPicks({
               <div className="total-points-container">
                 <label>Monday Night Total Points</label>
                 <input
+                  className="total-points-input"
                   type="number"
                   value={totalPoints}
                   onChange={(e) => setTotalPoints(e.target.value)}
@@ -62,9 +66,11 @@ export default function ChosenPicks({
         ))
       )}
 
-      <button className="nfl-game-btn" onClick={handleSubmitPicks}>
-        Submit
-      </button>
+      {Object.values(selectedTeam).some(team => team.isMondayNight) && (
+        <button className="nfl-game-btn" onClick={handleSubmitPicks}>
+          Submit
+        </button>
+      )}
     </div>
   );
 }
