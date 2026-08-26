@@ -1,5 +1,4 @@
 import express from "express";
-import crypto from "crypto";
 import pool from "../config/db.js";
 import { protect } from "../middleware/auth.middleware.js";
 
@@ -20,20 +19,13 @@ router.post("/", protect, async (req, res) => {
     console.log("Member:", memberId);
     console.log("Week:", week);
 
-    // Generate entry code (optional)
-    const entryCode = crypto.randomBytes(4).toString("hex").substring(0, 6).toUpperCase();
-
     /*-------------------------
         CREATE ENTRY
     --------------------------*/
     const entryResult = await client.query(
       `
       INSERT INTO pick_cards
-      (
-        member_id,
-        week,
-        monday_total_points
-      )
+      (member_id, week, monday_total_points)
       VALUES ($1, $2, $3)
       RETURNING id
       `,
@@ -41,28 +33,43 @@ router.post("/", protect, async (req, res) => {
     );
 
     const entryId = entryResult.rows[0].id;
-
     console.log("Created Entry:", entryId);
 
     /*-------------------------
-        SAVE PICKS
+        CREATE ENTRY CODE
+        Format: memberId-week-entryId
     --------------------------*/
-    for (const pick of picks) {
-      console.log("Saving:", pick);
+    const entryCode = `${memberId}-${week}-${entryId}`;
 
-      await client.query(
-        `
-        INSERT INTO card_picks
-        (
-          card_id,
-          game_id,
-          picked_team
-        )
-        VALUES ($1, $2, $3)
-        `,
-        [entryId, pick.game_id, pick.picked_team]
-      );
+    await client.query(
+      `UPDATE pick_cards SET entry_code = $1 WHERE id = $2`,
+      [entryCode, entryId]
+    );
+
+    /*-------------------------
+        BUILD JSONB PICKS
+        Example:
+        {
+          "401": "H",
+          "402": "A",
+          "403": "H"
+        }
+    --------------------------*/
+    const picksJson = {};
+    for (const pick of picks) {
+      picksJson[pick.game_id] = pick.picked_team; // "H" or "A"
     }
+
+    /*-------------------------
+        SAVE JSONB PICKS
+    --------------------------*/
+    await client.query(
+      `
+      INSERT INTO card_picks (card_id, week, picks)
+      VALUES ($1, $2, $3)
+      `,
+      [entryId, week, picksJson]
+    );
 
     await client.query("COMMIT");
 

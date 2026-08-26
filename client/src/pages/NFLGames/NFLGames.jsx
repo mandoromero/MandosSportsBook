@@ -43,6 +43,7 @@ export default function NFLGames() {
               gamesByWeek={gamesByWeek}
               selectedTeam={state.selectedTeam}
               handleTeamSelect={selectTeam}
+              nflWeek={nflWeek}
             />
 
             <ChosenPicks
