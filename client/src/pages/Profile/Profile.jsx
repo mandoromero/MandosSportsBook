@@ -134,7 +134,14 @@ export default function Profile() {
         <Link to="/nfl-games">
           NFL Games
         </Link>
-)}
+      )}
+
+      {token && (
+        <Link to="/nfl-pool-results">
+          NFL Pool Results
+        </Link>
+      )}
+
       <h2 className="profile-title">Profile</h2>
       <div className="money">
         <div id="balance-container" className="money-containere">

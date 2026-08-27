@@ -1,226 +1,109 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import "./NFLPoolResults.css";
+import "../NFLPoolResults/NFLPoolResults.css";
 
-export default function NFLPoolResults() {
+export default function NFLPoolResults({ token }) {
+  const [cards, setCards] = useState([]);
+  const [games, setGames] = useState([]);
 
-    const [games,setGames]=useState([]);
-    const [results,setResults]=useState({});
-    const [members,setMembers]=useState([]);
-
-    useEffect(()=>{
-
-        async function load(){
-
-            const token=localStorage.getItem("token");
-
-            const res=await axios.get(
-                "http://localhost:5001/api/nfl-pool-results/1",
-                {
-                    headers:{
-                        Authorization:`Bearer ${token}`
-                    }
-                }
-            );
-
-            setGames(res.data.games);
-
-            const resultMap={};
-
-            res.data.results.forEach(r=>{
-                resultMap[r.game_id]=r;
-            });
-
-            setResults(resultMap);
-
-            const memberMap={};
-
-            res.data.picks.forEach(p=>{
-
-                if(!memberMap[p.username]){
-
-                    memberMap[p.username]={
-                        username:p.username,
-                        picks:{},
-                        totalPoints:p.total_points
-                    };
-
-                }
-
-                memberMap[p.username].picks[p.game_id]=p.picked_team;
-
-            });
-
-            setMembers(Object.values(memberMap));
-
-        }
-
-        load();
-
-    },[]);
-
-    const getScore=(member)=>{
-
-        let score=0;
-
-        games.forEach(game=>{
-
-            const pick=member.picks[game.game_id];
-
-            const winner=results[game.game_id]?.winner;
-
-            if(
-                winner &&
-                pick===winner
-            ){
-                score++;
-            }
-
+  // Fetch all picks + member info
+  useEffect(() => {
+    const fetchResults = async () => {
+      try {
+        const res = await fetch("http://localhost:5001/api/admin/picks/all", {
+          headers: { Authorization: `Bearer ${token}` },
         });
 
-        return score;
+        const data = await res.json();
+        setCards(data);
+      } catch (err) {
+        console.error("Error fetching results:", err);
+      }
+    };
 
-    }
+    fetchResults();
+  }, [token]);
 
-    return(
+  // Fetch all NFL games (needed to map game_id → team names)
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const res = await fetch("http://localhost:5001/api/nfl/games", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        <div className="pool-results">
+        const data = await res.json();
+        setGames(data.games || []);
+      } catch (err) {
+        console.error("Error fetching games:", err);
+      }
+    };
 
-            <table>
+    fetchGames();
+  }, [token]);
 
-                <thead>
+  // Build lookup table: game_id → { away, home }
+  const gameLookup = {};
+  games.forEach((g) => {
+    gameLookup[g.id] = {
+      away: g.away_team,
+      home: g.home_team,
+    };
+  });
 
-                    <tr>
+  // Sort games by kickoff time so columns appear in order
+  const sortedGames = [...games].sort(
+    (a, b) => new Date(a.commence_time) - new Date(b.commence_time)
+  );
 
-                        <th>User</th>
+  return (
+    <div className="results-container">
+      <h1 className="results-title">NFL Pool Results</h1>
 
-                        {
-                            games.map(game=>(
+      <table className="results-table">
+        <thead>
+          <tr>
+            <th>Entry Code</th>
+            <th>First Name</th>
+            <th>Last Name</th>
 
-                                <th
-                                    key={game.game_id}
-                                    colSpan={2}
-                                >
-                                    {game.away_team}
-                                    <br/>
-                                    @
-                                    <br/>
-                                    {game.home_team}
-                                </th>
+            {/* Dynamic game columns */}
+            {sortedGames.map((game) => (
+              <th key={game.id}>
+                {game.away_team} vs {game.home_team}
+              </th>
+            ))}
 
-                            ))
-                        }
+            <th>MNF Total</th>
+          </tr>
+        </thead>
 
-                        <th>Total</th>
+        <tbody>
+          {cards.map((card) => (
+            <tr key={card.entry_code}>
+              <td>{card.entry_code}</td>
+              <td>{card.first_name}</td>
+              <td>{card.last_name}</td>
 
-                        <th>MNF</th>
+              {/* Dynamic picks per game */}
+              {sortedGames.map((game) => {
+                const pick = card.picks[game.id]; // "H" or "A"
 
-                    </tr>
+                let pickedTeam = "";
+                if (pick === "H") pickedTeam = game.home_team;
+                if (pick === "A") pickedTeam = game.away_team;
 
-                    <tr>
+                return (
+                  <td key={game.id}>
+                    {pick ? pickedTeam : "-"}
+                  </td>
+                );
+              })}
 
-                        <th></th>
-
-                        {
-                            games.map(game=>(
-
-                                <>
-                                <th>A</th>
-                                <th>H</th>
-                                </>
-
-                            ))
-                        }
-
-                        <th></th>
-                        <th></th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                {
-                    members.map(member=>(
-
-                        <tr key={member.username}>
-
-                            <td>
-
-                                {member.username}
-
-                            </td>
-
-                            {
-                                games.map(game=>{
-
-                                    const pick=
-                                    member.picks[game.game_id];
-
-                                    const winner=
-                                    results[game.game_id]?.winner;
-
-                                    return(
-
-                                        <>
-                                        <td
-                                        className={
-                                            winner==="A"
-                                            ? "winner"
-                                            :""
-                                        }
-                                        >
-                                            {
-                                                pick==="A"
-                                                ?"X"
-                                                :""
-                                            }
-                                        </td>
-
-                                        <td
-                                        className={
-                                            winner==="H"
-                                            ? "winner"
-                                            :""
-                                        }
-                                        >
-                                            {
-                                                pick==="H"
-                                                ?"X"
-                                                :""
-                                            }
-                                        </td>
-                                        </>
-
-                                    )
-
-                                })
-                            }
-
-                            <td>
-
-                                {getScore(member)}
-
-                            </td>
-
-                            <td>
-
-                                {member.totalPoints}
-
-                            </td>
-
-                        </tr>
-
-                    ))
-                }
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    )
-
+              <td>{card.monday_total_points}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
