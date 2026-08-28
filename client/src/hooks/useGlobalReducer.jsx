@@ -1,24 +1,16 @@
-import {
-  createContext,
-  useContext,
-  useReducer,
-} from "react";
+import { createContext, useContext, useReducer, useEffect } from "react";
+import axios from "axios";
 
 /* =========================
    LOCAL STORAGE
 ========================= */
-const storedUser =
-  localStorage.getItem("user");
-
-const storedToken =
-  localStorage.getItem("token");
+const storedUser = localStorage.getItem("user");
+const storedToken = localStorage.getItem("token");
 
 let parsedUser = null;
 
 try {
-  parsedUser = storedUser
-    ? JSON.parse(storedUser)
-    : null;
+  parsedUser = storedUser ? JSON.parse(storedUser) : null;
 } catch {
   localStorage.removeItem("user");
 }
@@ -36,7 +28,7 @@ const initialState = {
   sports: [],
 
   /* NFL */
-  nflGamers: [],
+  nflGames: [],
   selectedTeam: {},
   totalPoints: "",
   currentWeek: 1,
@@ -79,17 +71,8 @@ const reducer = (state, action) => {
        LOGIN / REGISTER
     ===================== */
     case ACTIONS.SET_USER:
-      localStorage.setItem(
-        "token",
-        action.payload.token
-      );
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify(
-          action.payload.user
-        )
-      );
+      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
 
       return {
         ...state,
@@ -112,6 +95,7 @@ const reducer = (state, action) => {
         token: null,
         isAuthenticated: false,
         sports: [],
+        nflGames: [],
         error: null,
       };
 
@@ -124,6 +108,51 @@ const reducer = (state, action) => {
         sports: action.payload,
         loading: false,
         error: null,
+      };
+
+    /* =====================
+       NFL GAMES
+    ===================== */
+    case ACTIONS.SET_NFL_GAMES:
+      return {
+        ...state,
+        nflGames: action.payload,
+      };
+
+    /* =====================
+       SELECTED TEAM
+    ===================== */
+    case ACTIONS.SET_SELECTED_TEAM:
+      return {
+        ...state,
+        selectedTeam: action.payload,
+      };
+
+    /* =====================
+       MONDAY TOTAL POINTS
+    ===================== */
+    case ACTIONS.SET_TOTAL_POINTS:
+      return {
+        ...state,
+        totalPoints: action.payload,
+      };
+
+    /* =====================
+       ENTRY CODE
+    ===================== */
+    case ACTIONS.SET_ENTRY_CODE:
+      return {
+        ...state,
+        entryCode: action.payload,
+      };
+
+    /* =====================
+       CURRENT WEEK
+    ===================== */
+    case ACTIONS.SET_WEEK:
+      return {
+        ...state,
+        currentWeek: action.payload,
       };
 
     /* =====================
@@ -145,54 +174,7 @@ const reducer = (state, action) => {
         error: action.payload,
         loading: false,
       };
-    /* ====================
-        NFL GAMES
-      ===================*/
-    case ACTIONS.SET_NFL_GAMES:
-      return {
-        ...state,
-        nflGames: action.payload,
-      };
 
-    /*====================
-        SELECTED TEAMS
-    ===================*/
-    case ACTION.SET_SELECTED_TEAM:
-      return {
-        ...state,
-        selectedTeam: action.payload,
-      };
-    
-    /*====================
-        MONDAY TOTAL
-    ===================*/
-    case ACTION.SET_TOTAL_POINTS:
-      return {
-        ...state,
-        totalPoints: action.payload,
-      };
-
-    /*================
-        ENTRY CODE
-      ==============*/
-    case ACTION.SET.ENTRY.CODE:
-      return {
-        ...state,
-        entryCode: action.payload,
-      };
-
-    /*================
-        CURRENT WEEK
-      ==============*/
-    case ACTION.CURRENT_WEEK:
-      return {
-        ...state,
-        currentWeek: action.payload,
-      }
-
-    /* =====================
-       DEFAULT
-    ===================== */
     default:
       return state;
   }
@@ -201,28 +183,46 @@ const reducer = (state, action) => {
 /* =========================
    CONTEXT
 ========================= */
-const StoreContext =
-  createContext();
+const StoreContext = createContext();
 
 /* =========================
    PROVIDER
 ========================= */
-export const StoreProvider = ({
-  children,
-}) => {
-  const [store, dispatch] =
-    useReducer(
-      reducer,
-      initialState
-    );
+export const StoreProvider = ({ children }) => {
+  const [store, dispatch] = useReducer(reducer, initialState);
+
+  /* =========================
+     AUTO-LOAD PROFILE
+  ========================= */
+  useEffect(() => {
+    if (!store.token) return;
+
+    const fetchProfile = async () => {
+      try {
+        const res = await axios.get("http://localhost:5001/api/auth/profile", {
+          headers: { Authorization: `Bearer ${store.token}` },
+        });
+
+        dispatch({
+          type: ACTIONS.SET_USER,
+          payload: { token: store.token, user: res.data.user },
+        });
+
+      } catch (err) {
+        const message = err.response?.data?.message;
+
+        if (message === "jwt expired" || err.response?.status === 401) {
+          dispatch({ type: ACTIONS.LOGOUT });
+          window.location.href = "/login";
+        }
+      }
+    };
+
+    fetchProfile();
+  }, [store.token]);
 
   return (
-    <StoreContext.Provider
-      value={{
-        store,
-        dispatch,
-      }}
-    >
+    <StoreContext.Provider value={{ store, dispatch }}>
       {children}
     </StoreContext.Provider>
   );
@@ -231,16 +231,12 @@ export const StoreProvider = ({
 /* =========================
    CUSTOM HOOK
 ========================= */
-export const useGlobalReducer =
-  () => {
-    const context =
-      useContext(StoreContext);
+export const useGlobalReducer = () => {
+  const context = useContext(StoreContext);
 
-    if (!context) {
-      throw new Error(
-        "useGlobalReducer must be used inside StoreProvider"
-      );
-    }
+  if (!context) {
+    throw new Error("useGlobalReducer must be used inside StoreProvider");
+  }
 
-    return context;
-  };
+  return context;
+};

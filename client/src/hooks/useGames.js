@@ -11,8 +11,10 @@ function gamesReducer(state, action) {
   switch (action.type) {
     case "FETCH_SUCCESS":
       return { ...state, games: action.payload, loading: false };
+
     case "FETCH_ERROR":
       return { ...state, games: [], loading: false, error: action.payload };
+
     default:
       return state;
   }
@@ -25,22 +27,32 @@ export default function useGames(token) {
     const fetchGames = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5001/sports/odds/americanfootball_nfl",
+          "http://localhost:5001/api/sports/odds/americanfootball_nfl",
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
-        const sorted = [...res.data].sort(
-          (a, b) => new Date(a.commence_time) - new Date(b.commence_time)
-        );
+        // Handle expired token
+        if (res.data?.message === "jwt expired") {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+          return;
+        }
 
-        dispatch({ type: "FETCH_SUCCESS", payload: sorted });
+        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
+
       } catch (err) {
         dispatch({ type: "FETCH_ERROR", payload: err.message });
+
+        // If axios throws 401
+        if (err.response?.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        }
       }
     };
 
     fetchGames();
   }, [token]);
 
-  return state;
+  return state; // { games, loading, error }
 }
