@@ -1,6 +1,6 @@
-import useGames from "../hooks/useGames";
-import ResultsTable from "../../components/ResultsTable/ResultsTables";
-import "../NFLPoolResults/NFLPoolResuts.css";
+import useGames from "../../hooks/useGames";
+import ResultsTable from "../../components/ResultsTable/ResultsTable";
+import "../NFLPoolResults/NFLPoolResults.css";
 
 export default function NFLPoolResults({ token }) {
   const { games, loading } = useGames(token);
