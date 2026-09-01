@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useGlobalReducer } from "../../hooks/useGlobalReducer";
 import SportsCard from "../../components/SportsCard/SportsCard";
 import "./Home.css";
 
@@ -12,6 +13,9 @@ const ALLOWED_SPORTS = [
 const CACHE_KEY = "sportsbook_odds";
 
 export default function Home() {
+  const { store, dispatch } = useGlobalReducer();
+  const token = store.token;
+
   const [oddsData, setOddsData] = useState({});
 
   useEffect(() => {
@@ -25,9 +29,13 @@ export default function Home() {
 
     const fetchSports = async () => {
       try {
-        const sportsRes = await axios.get(
-          "http://localhost:5001:api/sports"
+        const res = await axios.get(
+          "http://localhost:5001/sports",
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
         );
+
 
         const filteredSports = sportsRes.data.filter((sport) =>
           ALLOWED_SPORTS.includes(sport.key)

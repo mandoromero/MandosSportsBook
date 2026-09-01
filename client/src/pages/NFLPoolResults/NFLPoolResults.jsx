@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import useGames from "../../hooks/useGames";
 import ResultsTable from "../../components/ResultsTable/ResultsTable";
 import "../NFLPoolResults/NFLPoolResults.css";
@@ -6,24 +8,36 @@ export default function NFLPoolResults({ token }) {
   const { games, loading } = useGames(token);
   const [cards, setCards] = useState([]);
 
+  // Hardcode or pass week as a prop — adjust as needed
+  const week = 1;
+
   useEffect(() => {
     const fetchResults = async () => {
-      const res = await fetch("http://localhost:5001/api/admin/picks/all", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      try {
+        const res = await axios.get(
+          `http://localhost:5001/sports/nfl/results/${week}`,
+          {
+            headers: { Authorization: `Bearer ${token}` }
+          }
+        );
 
-      if (res.status === 401) {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-        return;
+        // Backend returns:
+        // { success, games, entries, picks, results }
+        setCards(res.data.entries || []);
+
+      } catch (err) {
+        console.error("Error fetching NFL pool results:", err);
+
+        // Handle expired token
+        if (err.response && err.response.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        }
       }
-
-      const data = await res.json();
-      setCards(data);
     };
 
     fetchResults();
-  }, [token]);
+  }, [token, week]);
 
   if (loading) return <p>Loading games...</p>;
 

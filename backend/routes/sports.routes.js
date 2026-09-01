@@ -6,6 +6,17 @@ const router = express.Router();
 
 console.log("✅ sports.routes.js loaded");
 
+/*=============================
+  SPORTS LIST ROUTE
+=============================*/
+router.get("/", (req, res) => {
+  res.json([
+    { key: "americanfootball_nfl" },
+    { key: "baseball_mlb" },
+    { key: "basketball_nba" }
+  ]);
+});
+
 /*==============================
       FOR NFLGAMES (ODDS API)
 ==============================*/
@@ -79,6 +90,61 @@ router.get("/:sport/games", async (req, res) => {
     });
   }
 });
+
+/*==============================
+    NFL GAMES BY WEEK
+==============================*/
+router.post("/nfl/import/:week", async (req, res) => {
+  try {
+    const { week } = req.params;
+
+    // 1. Fetch games from API
+    const response = await axios.get(
+      `https://api.the-odds-api.com/v4/sports/americanfootball_nfl/games`,
+      {
+        params: {
+          apiKey: process.env.ODDS_API_KEY,
+          regions: "us",
+          markets: "h2h",
+        },
+      }
+    );
+
+    const games = response.data;
+
+    // 2. Filter by week (if API includes week)
+    const weekGames = games.filter(g => g.week === Number(week));
+
+    // 3. Insert into DB
+    for (const g of weekGames) {
+      await pool.query(
+        `
+        INSERT INTO nfl_games (game_id, week, away_team, home_team, commence_time)
+        VALUES ($1, $2, $3, $4, $5)
+        ON CONFLICT (game_id) DO NOTHING
+        `,
+        [
+          g.id,            // API game_id
+          week,
+          g.away_team,
+          g.home_team,
+          g.commence_time
+        ]
+      );
+    }
+
+    res.json({
+      success: true,
+      inserted: weekGames.length,
+      week,
+    });
+
+  } catch (err) {
+    console.error("🔥 NFL IMPORT ERROR:", err.message);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 
 /*==============================
       NFL POOL RESULTS (DB)
