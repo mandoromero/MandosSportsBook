@@ -26,7 +26,7 @@ export default function Home() {
     const fetchSports = async () => {
       try {
         const sportsRes = await axios.get(
-          "http://localhost:5001/api/sports"
+          "http://localhost:5001:api/sports"
         );
 
         const filteredSports = sportsRes.data.filter((sport) =>

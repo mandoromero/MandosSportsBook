@@ -27,7 +27,7 @@ export default function useGames(token) {
     const fetchGames = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5001/api/sports/odds/americanfootball_nfl",
+          http://localhost:5001/sports/odds/americanfootball_nfl,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
