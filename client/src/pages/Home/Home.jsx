@@ -1,96 +1,48 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useGlobalReducer } from "../../hooks/useGlobalReducer";
+import { ACTIONS } from "../../hooks/useGlobalReducer";
 import SportsCard from "../../components/SportsCard/SportsCard";
 import "./Home.css";
 
-const ALLOWED_SPORTS = [
-  "americanfootball_nfl",
-  "baseball_mlb",
-  "basketball_nba",
-];
-
-const CACHE_KEY = "sportsbook_odds";
-
 export default function Home() {
   const { store, dispatch } = useGlobalReducer();
-  const token = store.token;
+  const { sports } = store;
 
-  const [oddsData, setOddsData] = useState({});
+  const fetchSports = async () => {
+    try {
+      // 1. Fetch sports list
+      const sportsRes = await axios.get("http://localhost:5001/sports");
+
+      dispatch({
+        type: ACTIONS.SET_SPORTS,
+        payload: sportsRes.data
+      });
+
+      // 2. Fetch odds for first sport
+      const firstSport = sportsRes.data[0].key;
+
+      const oddsRes = await axios.get(
+        `http://localhost:5001/sports/odds/${firstSport}`
+      );
+
+      dispatch({
+        type: ACTIONS.SET_NFL_GAMES,
+        payload: oddsRes.data
+      });
+
+    } catch (err) {
+      console.error("Error fetching odds:", err);
+    }
+  };
 
   useEffect(() => {
-    const cachedOdds = localStorage.getItem(CACHE_KEY);
-
-    if (cachedOdds) {
-      console.log("🔥 Using localStorage cache");
-      setOddsData(JSON.parse(cachedOdds));
-      return;
-    }
-
-    const fetchSports = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:5001/sports",
-          {
-            headers: { Authorization: `Bearer ${token}` }
-          }
-        );
-
-
-        const filteredSports = sportsRes.data.filter((sport) =>
-          ALLOWED_SPORTS.includes(sport.key)
-        );
-
-        const newOddsData = {};
-
-        for (const sport of filteredSports) {
-          const oddsRes = await axios.get(
-            `http://localhost:5001/api/sports/odds/${sport.key}`
-          );
-
-          newOddsData[sport.key] = oddsRes.data;
-
-          await new Promise((resolve) =>
-            setTimeout(resolve, 1200)
-          );
-        }
-
-        localStorage.setItem(
-          CACHE_KEY,
-          JSON.stringify(newOddsData)
-        );
-
-        setOddsData(newOddsData);
-      } catch (err) {
-        console.error("Error fetching odds:", err);
-      }
-    };
-
     fetchSports();
   }, []);
 
-  const SPORT_TITLES = {
-    americanfootball_nfl: "NFL",
-    baseball_mlb: "MLB",
-    basketball_nba: "NBA",
-  };
-
   return (
-    <div id="home-container">
-      <h1 className="main-title">
-        Welcome to Mando's Sports Book!
-      </h1>
-
-      <div className="sport-card-container">
-        {Object.keys(oddsData).map((sportKey) => (
-          <SportsCard
-            key={sportKey}
-            title={SPORT_TITLES[sportKey]}
-            sport={sportKey}
-            games={oddsData[sportKey] || []}
-          />
-        ))}
-      </div>
+    <div>
+      <SportsCard sports="sports" />
     </div>
   );
 }
