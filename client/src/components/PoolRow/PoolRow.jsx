@@ -1,14 +1,15 @@
-import "../ResultsRow/ResultsRow.css";
+import "./PoolRow.css";
 
-export default function ResultsRow({ card, games }) {
+export default function PoolRow({ card, games }) {
   return (
-    <tr>
+    <tr className="pool-row">
       <td>{card.entry_code}</td>
       <td>{card.first_name}</td>
       <td>{card.last_name}</td>
 
       {games.map((game) => {
-        const pick = card.picks[game.id];
+        const pick = card.picks?.[game.game_id]; // JSONB lookup
+
         const pickedTeam =
           pick === "H"
             ? game.home_team
@@ -16,7 +17,11 @@ export default function ResultsRow({ card, games }) {
             ? game.away_team
             : "-";
 
-        return <td key={game.id}>{pickedTeam}</td>;
+        return (
+          <td key={game.game_id} className="pool-cell">
+            {pickedTeam}
+          </td>
+        );
       })}
 
       <td>{card.monday_total_points}</td>

@@ -4,9 +4,9 @@ import { protect } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-/*-----------------
-    SAVE NFL PICKS
------------------*/
+/*-----------------------------
+      SAVE NFL MEMBER PICKS
+------------------------------*/
 router.post("/", protect, async (req, res) => {
   const client = await pool.connect();
 
@@ -19,9 +19,9 @@ router.post("/", protect, async (req, res) => {
     console.log("Member:", memberId);
     console.log("Week:", week);
 
-    /*-------------------------
-        CREATE ENTRY
-    --------------------------*/
+    /*----------------------------------
+        1. CREATE PICK CARD ENTRY
+    ----------------------------------*/
     const entryResult = await client.query(
       `
       INSERT INTO pick_cards
@@ -35,10 +35,10 @@ router.post("/", protect, async (req, res) => {
     const entryId = entryResult.rows[0].id;
     console.log("Created Entry:", entryId);
 
-    /*-------------------------
-        CREATE ENTRY CODE
+    /*----------------------------------
+        2. CREATE ENTRY CODE
         Format: memberId-week-entryId
-    --------------------------*/
+    ----------------------------------*/
     const entryCode = `${memberId}-${week}-${entryId}`;
 
     await client.query(
@@ -46,23 +46,23 @@ router.post("/", protect, async (req, res) => {
       [entryCode, entryId]
     );
 
-    /*-------------------------
-        BUILD JSONB PICKS
+    /*----------------------------------
+        3. BUILD JSONB PICKS OBJECT
         Example:
         {
           "401": "H",
           "402": "A",
           "403": "H"
         }
-    --------------------------*/
+    ----------------------------------*/
     const picksJson = {};
     for (const pick of picks) {
       picksJson[pick.game_id] = pick.picked_team; // "H" or "A"
     }
 
-    /*-------------------------
-        SAVE JSONB PICKS
-    --------------------------*/
+    /*----------------------------------
+        4. SAVE JSONB PICKS
+    ----------------------------------*/
     await client.query(
       `
       INSERT INTO card_picks (card_id, week, picks)

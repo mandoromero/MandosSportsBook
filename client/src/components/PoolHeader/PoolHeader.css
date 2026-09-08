@@ -1,0 +1,35 @@
+th {
+    border: 1px dashed red;
+
+}
+
+th.rotate {
+    transform: rotate(270deg);
+    transform-origin: bottom left;
+    white-space: nowrap;
+    padding: 5px;
+    height: 150px;
+    width: 120px;
+}
+
+.rotate-btt {
+    margin: 0;
+}
+
+.header-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+}
+
+.team {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.v-s {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}

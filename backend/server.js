@@ -3,9 +3,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import pool from "./config/db.js";
 import sportsRoutes from "./routes/sports.routes.js";
+import memberPicksRoutes from "./routes/memberPicksRoutes.js"
 import authRoutes from "./routes/auth.routes.js";
-import memberPicksRoutes from "./routes/memberPIcksRoutes.js";
-import nflResultsRoutes from "./routes/nflPoolResultsRoutes.js";
+import nflResultsRoutes from "./routes/pool.results.js";
 import weeklyGamesRoutes from "./routes/weeklyGames.js";
 
 dotenv.config();
