@@ -1,18 +1,19 @@
+.pool-header-row th {
+    padding: 0;
+    margin-top: 100px;
+    border: 1px solid #acc;
+}
+
 th {
     border: 1px dashed red;
 
 }
 
-th.rotate {
+.rotate, .rotate-btt {
     transform: rotate(270deg);
-    transform-origin: bottom left;
+    transform-origin: left center;   /* prevents first column from disappearing */
     white-space: nowrap;
-    padding: 5px;
-    height: 150px;
-    width: 120px;
-}
-
-.rotate-btt {
+    padding: 0;
     margin: 0;
 }
 

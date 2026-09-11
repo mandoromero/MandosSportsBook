@@ -39,6 +39,8 @@ export default function NFLPoolResults({ token }) {
   if (loading) return <p>Loading games...</p>;
 
   return (
-    <PoolTable cards={cards} games={games} />
+    <div classname="pool-results-container">
+      <PoolTable cards={cards} games={games} />
+    </div>
   );
 }
