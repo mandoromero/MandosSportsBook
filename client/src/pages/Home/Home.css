@@ -1,19 +1,19 @@
-#home-container {
+.home-container {
     height: 100vh;
-    padding: 200px;
+    padding: 150px;
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .main-title {
     width: 800px;
-    margin: 0 auto 100px auto;
+    margin: 50px auto 50px auto;
     font-size: 3rem;
 }
 
-.sport-card-container {
-    display: flex;
-    flex-direction: row;
-    gap:75px;
+.sports-card-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 20px;
 }

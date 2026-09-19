@@ -1,9 +1,10 @@
 .sports-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  padding: 20px;
   color: #fff;
-  width: 450px;
+  width: 300px;
   height: 700px;
   margin: 50px auto;
   font-size: 1.5rem;
@@ -13,7 +14,6 @@
   outline: 8px ridge #228b22;
   outline-offset:6px;
   border-radius: 8px;
-  overflow: hidden;
   box-shadow:
     rgba(4, 57, 39, 0.25) 0px 50px 100px -20px,
     rgba(4, 57, 39, 0.3) 0px 30px 60px -30px,

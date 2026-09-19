@@ -1,6 +1,37 @@
 .pool-table {
-    margin: 100px 50px;
     border-collapse: collapse;
-    border-spacing: 0;
-    height: 100vh;
+    width: 100%;
+}
+
+.pool-table th,
+.pool-table td {
+    border: 1pc solid #ddd;  
+    padding: 8px;
+    text-align: center;
+}
+
+.rotate {
+    writing-mode: verticle-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+}
+
+.vertical-stack {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    height: 180px;
+    gap: 12px;
+}
+
+
+.header-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-game .team {
+    font-weight: bold;
 }

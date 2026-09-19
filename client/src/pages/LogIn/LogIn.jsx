@@ -5,7 +5,7 @@ import { useGlobalReducer, ACTIONS } from "../../hooks/useGlobalReducer";
 
 import "../LogIn/LogIn.css";
 
-export default function Login() {
+export default function LogIn() {
   const { dispatch } = useGlobalReducer();
   const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState("");

@@ -70,7 +70,7 @@ export default function Navbar() {
                                 id="login-btn"
                                 className="btn"
                             >
-                                Login
+                                Log In
                             </button>
                         </Link>
 

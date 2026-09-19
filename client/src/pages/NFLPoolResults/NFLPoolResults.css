@@ -1,0 +1,8 @@
+.pool-results-container {
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    border: 1px dashed red;
+    margin-top: 100px;
+}
