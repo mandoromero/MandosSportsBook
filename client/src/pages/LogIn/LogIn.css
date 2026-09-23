@@ -68,7 +68,7 @@
 .login-toggle-icon {
     position: absolute;
     right: 470px;
-    top: 56%;
+    top: 58%;
     transform: translateY(-50%);
     cursor: pointer;
     font-size: 18px;
@@ -85,7 +85,7 @@
 }
 
 .forgot-password a {
-    color: black;
+    color: #d3d4d9;
     text-decoration: none;
     font-size: 0.8rem;
     display: flex;

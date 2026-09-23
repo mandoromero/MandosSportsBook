@@ -1,3 +1,9 @@
+.pool-table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .pool-table {
     border-collapse: collapse;
     width: 100%;
@@ -5,33 +11,38 @@
 
 .pool-table th,
 .pool-table td {
-    border: 1pc solid #ddd;  
+    border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
 }
 
 .rotate {
-    writing-mode: verticle-rl;
+    height: 180px;
+    padding: 8px;
+    background-color: white;
+}
+
+.header-game {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.header-game .team,
+.header-game .vs {
+    writing-mode: vertical-rl;
     transform: rotate(180deg);
     white-space: nowrap;
 }
 
-.vertical-stack {
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: center;
-    align-items: center;
-    height: 180px;
-    gap: 12px;
-}
-
-
-.header-game {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .header-game .team {
     font-weight: bold;
+    font-size: 18px;
+}
+
+.header-game .vs {
+    margin: 0;
+    font-size: 20px;
 }
