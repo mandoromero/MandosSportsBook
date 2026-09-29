@@ -6,6 +6,7 @@ import sportsRoutes from "./routes/sports.routes.js";
 import memberPicksRoutes from "./routes/memberPicksRoutes.js"
 import authRoutes from "./routes/auth.routes.js";
 import nflResultsRoutes from "./routes/pool.results.js";
+import nflScheduleRoutes from "./routes/nflSchedule.routes.js";
 
 dotenv.config();
 
@@ -23,6 +24,8 @@ app.get("/", (req, res) => {
 app.use("/api/member-picks", memberPicksRoutes);
 
 app.use("/api/nfl/results", nflResultsRoutes);
+
+app.use("/api/nfl/schedule", nflScheduleRoutes);
 
 // ROUTES
 app.use("/sports", sportsRoutes);

@@ -82,6 +82,9 @@ router.get("/:week", async (req, res) => {
       };
     });
 
+    console.log("Entries retrieved from database:", entriesResult.rows);
+    console.log("Final entries being sent:", entries);
+
     /*----------------------------------
       5. SEND FINAL RESPONSE
     ----------------------------------*/

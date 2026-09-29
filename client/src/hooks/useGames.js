@@ -10,10 +10,20 @@ const initialState = {
 function gamesReducer(state, action) {
   switch (action.type) {
     case "FETCH_SUCCESS":
-      return { ...state, games: action.payload, loading: false };
+      return {
+        ...state,
+        games: action.payload,
+        loading: false,
+        error: null
+      };
 
     case "FETCH_ERROR":
-      return { ...state, games: [], loading: false, error: action.payload };
+      return {
+        ...state,
+        games: [],
+        loading: false,
+        error: action.payload
+      };
 
     default:
       return state;
@@ -28,8 +38,15 @@ export default function useGames(token) {
       try {
         const res = await axios.get(
           "http://localhost:5001/sports/odds/americanfootball_nfl",
-          { headers: { Authorization: `Bearer ${token}` } }
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
         );
+
+        console.log("🏈 NFL Games response:", res.data);
+        console.log("🏈 Number of games:", res.data?.length);
 
         // Handle expired token
         if (res.data?.message === "jwt expired") {
@@ -38,10 +55,18 @@ export default function useGames(token) {
           return;
         }
 
-        dispatch({ type: "FETCH_SUCCESS", payload: res.data });
+        dispatch({
+          type: "FETCH_SUCCESS",
+          payload: res.data
+        });
 
       } catch (err) {
-        dispatch({ type: "FETCH_ERROR", payload: err.message });
+        console.error("🔥 useGames error:", err);
+
+        dispatch({
+          type: "FETCH_ERROR",
+          payload: err.message
+        });
 
         // If axios throws 401
         if (err.response?.status === 401) {
@@ -51,8 +76,10 @@ export default function useGames(token) {
       }
     };
 
-    fetchGames();
+    if (token) {
+      fetchGames();
+    }
   }, [token]);
 
-  return state; // { games, loading, error }
+  return state;
 }

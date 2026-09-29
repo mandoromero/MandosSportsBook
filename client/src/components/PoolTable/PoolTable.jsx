@@ -1,13 +1,19 @@
 import "../PoolTable/PoolTable.css";
 
-export default function PoolTable({ cards, games }) {
+export default function PoolTable({ cards = [], games = [] }) {
   const sortedGames = [...games].sort(
-    (a, b) => new Date(a.commence_time) - new Date(b.commence_time)
+    (a, b) =>
+      new Date(a.commence_time) - new Date(b.commence_time)
   );
+
+  console.log("Cards received:", cards);
+  console.log("Number of cards:", cards.length);
+  console.log("Games received:", games);
 
   return (
     <div className="pool-table-container">
-      <h2>Weekly NFL Pool</h2>
+      <h2>Week 3 NFL Pool</h2>
+
       <table className="pool-table">
         <thead>
           <tr className="pool-header-row">
@@ -31,13 +37,19 @@ export default function PoolTable({ cards, games }) {
 
         <tbody>
           {cards.map((card) => (
-            <tr key={card.entry_code}>
+            <tr key={card.card_id}>
               <td>{card.entry_code}</td>
               <td>{card.first_name}</td>
               <td>{card.last_name}</td>
 
               {sortedGames.map((game) => {
-                const pick = card.picks[game.game_id];
+                const savedPick = card.picks?.[game.game_id];
+
+                const pick =
+                  typeof savedPick === "string"
+                    ? savedPick
+                    : savedPick?.pick;
+
                 const pickedTeam =
                   pick === "H"
                     ? game.home_team
@@ -45,10 +57,14 @@ export default function PoolTable({ cards, games }) {
                     ? game.away_team
                     : "-";
 
-                return <td key={game.game_id}>{pickedTeam}</td>;
+                return (
+                  <td key={game.game_id}>
+                    {pickedTeam}
+                  </td>
+                );
               })}
 
-              <td>{card.monday_total_points}</td>
+              <td>{card.monday_total_points ?? "-"}</td>
             </tr>
           ))}
         </tbody>
