@@ -32,9 +32,10 @@ export default function NFLPoolResults() {
           }
         );
 
-        console.log("✅ NFL Results response:", res.data);
-        console.log("🏈 Number of games:", res.data.games?.length);
-        console.log("👥 Number of entries:", res.data.entries?.length);
+        console.log("FULL RESULTS API RESPONSE:", res.data);
+        console.log("GAMES:", res.data.games);
+        console.log("ENTRIES:", res.data.entries);
+        console.log("FIRST ENTRY PICKS:", res.data.entries?.[0]?.picks);
 
         setGames(res.data.games || []);
         setCards(res.data.entries || []);
