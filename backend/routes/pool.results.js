@@ -10,29 +10,43 @@ const router = express.Router();
 router.get("/:week", async (req, res) => {
   try {
     const week = Number(req.params.week);
+    const season = Number(req.query.season ?? 2026);
 
-    /*----------------------------------
-      1. GET THIS WEEK'S GAMES
-    ----------------------------------*/
+    if (
+      !Number.isInteger(week) ||
+      week < 1 ||
+      week > 18 ||
+      !Number.isInteger(season)
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid NFL week or season.",
+      });
+    }
+
+  /*====================================
+    1. Get games for the requested 
+    season and week.
+  =====================================*/
     const gamesResult = await pool.query(
       `
       SELECT
         game_id,
+        season,
         week,
         away_team,
         home_team,
         commence_time
-      FROM nfl_games
-      WHERE week = $1
+      FROM public.nfl_games
+      WHERE season = $1 AND week = $2
       ORDER BY commence_time
       `,
-      [week]
+      [season, week]
     );
 
-    /*----------------------------------
-      2. GET ALL ENTRIES FOR THIS WEEK
-         (pick_cards + members)
-    ----------------------------------*/
+  /*=========================================
+    2. Get pool entries for this week.
+  =========================================*/
     const entriesResult = await pool.query(
       `
       SELECT
@@ -44,61 +58,59 @@ router.get("/:week", async (req, res) => {
         m.username,
         m.first_name,
         m.last_name
-      FROM pick_cards pc
-      JOIN members m ON m.id = pc.member_id
+      FROM public.pick_cards pc
+      JOIN public.members m ON m.id = pc.member_id
       WHERE pc.week = $1
       ORDER BY m.username, pc.id
       `,
       [week]
     );
 
-    /*----------------------------------
-      3. GET PICKS JSON FOR EACH CARD
-         card_picks.picks (jsonb)
-    ----------------------------------*/
+    /*=========================================
+      3. Get saved picks for the entries.
+    =========================================*/
     const picksResult = await pool.query(
       `
       SELECT
         cp.card_id,
         cp.picks
-      FROM card_picks cp
+      FROM public.card_picks cp
       WHERE cp.week = $1
-      ORDER BY cp.card_id
       `,
       [week]
     );
 
-    /*----------------------------------
-      4. MERGE PICKS INTO ENTRIES
-    ----------------------------------*/
-    const entries = entriesResult.rows.map((entry) => {
-      const pickRecord = picksResult.rows.find(
-        (p) => p.card_id === entry.card_id
-      );
+    /*=========================================
+      4. Match picks to their cards.
+    =========================================*/
+    const picksByCard = new Map(
+      picksResult.rows.map((record) => [
+        record.card_id,
+        record.picks ?? {},
+      ])
+    );
 
-      return {
-        ...entry,
-        picks: pickRecord ? pickRecord.picks : {}
-      };
-    });
+    const entries = entriesResult.rows.map((entry) => ({
+      ...entry,
+      picks: picksByCard.get(entry.card_id) ?? {},
+    }));
 
-    console.log("Entries retrieved from database:", entriesResult.rows);
-    console.log("Final entries being sent:", entries);
-
-    /*----------------------------------
-      5. SEND FINAL RESPONSE
-    ----------------------------------*/
+    /*=========================================
+      5. Send the results to the frontend.
+    =========================================*/
     res.json({
       success: true,
+      season,
+      week,
       games: gamesResult.rows,
-      entries
+      entries,
     });
-
   } catch (err) {
-    console.error("🔥 NFL RESULTS ERROR:", err);
+    console.error("NFL RESULTS ERROR:", err);
+
     res.status(500).json({
       success: false,
-      message: "Unable to load NFL Pool Results."
+      message: "Unable to load NFL Pool Results.",
     });
   }
 });

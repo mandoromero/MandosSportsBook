@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PoolTable from "../../components/PoolTable/PoolTable";
@@ -12,6 +13,11 @@ export default function NFLPoolResults() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Filter games to show only the selected week
+  const weekGames = games.filter(
+    (game) => Number(game.week) === Number(week)
+  );
+
   useEffect(() => {
     if (!token) {
       setLoading(false);
@@ -24,7 +30,7 @@ export default function NFLPoolResults() {
         setError("");
 
         const res = await axios.get(
-          `http://localhost:5001/api/nfl/results/${week}`,
+          `http://localhost:5001/api/nfl/results/${week}?season=2026`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -35,7 +41,10 @@ export default function NFLPoolResults() {
         console.log("FULL RESULTS API RESPONSE:", res.data);
         console.log("GAMES:", res.data.games);
         console.log("ENTRIES:", res.data.entries);
-        console.log("FIRST ENTRY PICKS:", res.data.entries?.[0]?.picks);
+        console.log(
+          "FIRST ENTRY PICKS:",
+          res.data.entries?.[0]?.picks
+        );
 
         setGames(res.data.games || []);
         setCards(res.data.entries || []);
@@ -55,7 +64,7 @@ export default function NFLPoolResults() {
     };
 
     fetchResults();
-  }, [token]);
+  }, [token, week]);
 
   if (loading) {
     return <p>Loading NFL pool results...</p>;
@@ -67,7 +76,7 @@ export default function NFLPoolResults() {
 
   return (
     <div className="pool-results-container">
-      <PoolTable cards={cards} games={games} />
+      <PoolTable cards={cards} games={weekGames} />
     </div>
   );
 }

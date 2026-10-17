@@ -1,80 +1,87 @@
-import { useReducer } from "react";
+
+import { useReducer, useEffect } from "react";
+import axios from "axios";
 
 const initialState = {
-  selectedTeam: {},
-  totalPoints: ""
+  games: [],
+  loading: true,
+  error: null,
 };
 
-function picksReducer(state, action) {
+function gamesReducer(state, action) {
   switch (action.type) {
-    case "SELECT_TEAM":
+    case "FETCH_SUCCESS":
       return {
-        ...state,
-        selectedTeam: action.payload
+        games: action.payload,
+        loading: false,
+        error: null,
       };
 
-
-    case "SET_POINTS":
-      return { ...state, totalPoints: action.payload };
+    case "FETCH_ERROR":
+      return {
+        games: [],
+        loading: false,
+        error: action.payload,
+      };
 
     default:
       return state;
   }
 }
 
-export default function usePicks() {
-  const [state, dispatch] = useReducer(picksReducer, initialState);
+export default function useGames(token) {
+  const [state, dispatch] = useReducer(
+    gamesReducer,
+    initialState
+  );
 
-  const selectTeam = (game, pick) => {
-    const currentPick = state.selectedTeam[game.id]?.pick;
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5001/api/nfl/schedule/season/2026",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-    console.log("Current pick:", currentPick);
-    console.log("SelectedTeam BEFORE:", state.selectedTeam);
+        if (!response.data.success) {
+          throw new Error("Unable to load NFL schedule.");
+        }
 
-    // ⭐ If user clicks the SAME team again → unselect it
-    if (currentPick === pick) {
-      const updated = { ...state.selectedTeam };
-      delete updated[game.id];
+        console.log(
+          "🏈 NFL schedule loaded:",
+          response.data.games.length
+        );
 
-      console.log("Updated AFTER delete:", updated);
+        dispatch({
+          type: "FETCH_SUCCESS",
+          payload: response.data.games,
+        });
+      } catch (error) {
+        console.error("NFL schedule error:", error);
 
-      dispatch({
-        type: "SELECT_TEAM",
-        payload: updated
-      });
+        dispatch({
+          type: "FETCH_ERROR",
+          payload:
+            error.response?.data?.message ||
+            error.message ||
+            "Unable to load NFL schedule.",
+        });
 
-      return;
-    }
-
-    // ⭐ Otherwise → set the new pick
-    const weekday = new Date(game.commence_time).toLocaleDateString("en-US", {
-      weekday: "long"
-    });
-
-    const isMondayNight = weekday === "Monday";
-
-    const updated = {
-      ...state.selectedTeam,
-      [game.id]: {
-        pick,
-        team: pick === "A" ? game.away_team : game.home_team,
-        commence_time: game.commence_time,
-        isMondayNight
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        }
       }
     };
 
-    console.log("Updated AFTER new pick:", updated);
+    if (token) {
+      fetchGames();
+    }
+  }, [token]);
 
-    dispatch({
-      type: "SELECT_TEAM",
-      payload: updated
-    });
-  };
-
-
-  const setPoints = (points) => {
-    dispatch({ type: "SET_POINTS", payload: points });
-  };
-
-  return { state, selectTeam, setPoints };
+  return state;
 }
